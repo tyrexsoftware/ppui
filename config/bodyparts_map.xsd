@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<xs:schema version="1.0"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+    <pimate>
+        <bodypart id="1" view = "Anterior" value="Anterior: Head "/>
+        <bodypart id="2" view = "Anterior" value="Anterior: Chest "/>
+        <bodypart id="3" view = "Anterior" value="Anterior: Abdomen "/>
+        <bodypart id="4" view = "Posterior" value="Tail "/>
+        <bodypart id="5" view = "Anterior" value="Anterior: Right Arm "/>
+        <bodypart id="6" view = "Anterior" value="Anterior: Right Forearm/Hand "/>
+        <bodypart id="7" view = "Anterior" value="Anterior: Left Arm "/>
+        <bodypart id="8" view = "Anterior" value="Anterior: Left Forearm/Hand "/>
+        <bodypart id="9" view = "Anterior" value="Anterior: Right Thigh "/>
+        <bodypart id="10" view = "Anterior" value="Anterior: Right Shin/Foot "/>
+        <bodypart id="11" view = "Anterior" value="Anterior: Left Thigh "/>
+        <bodypart id="12" view = "Anterior" value="Anterior: Left Shin/Foot "/>
+        <bodypart id="13" view = "Posterior" value="Posterior: Head "/>
+        <bodypart id="14" view = "Posterior" value="Posterior: Superior Back "/>
+        <bodypart id="15" view = "Posterior" value="Posterior: Inferior Back "/>
+        <bodypart id="16" view = "Posterior" value="Tail "/>
+        <bodypart id="17" view = "Posterior" value="Posterior: Left Arm "/>
+        <bodypart id="18" view = "Posterior" value="Posterior: Left Forearm/Hand "/>
+        <bodypart id="19" view = "Posterior" value="Posterior: Right Arm "/>
+        <bodypart id="20" view = "Posterior" value="Posterior: Right Forearm/Hand "/>
+        <bodypart id="21" view = "Posterior" value="Posterior: Left Thigh "/>
+        <bodypart id="22" view = "Posterior" value="Posterior: Left Calf/Foot "/>
+        <bodypart id="23" view = "Posterior" value="Posterior: Right Thigh "/>
+        <bodypart id="24" view = "Posterior" value="Posterior: Right Calf/Foot"/>
+    </pimate>
+</xs:schema>

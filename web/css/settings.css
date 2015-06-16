@@ -1,0 +1,25 @@
+    .settingsline{overflow: hidden;}
+    .settingsline > div{float:left; margin: 3px 15px 0 0;}
+    .settingsline > div + div{width: 38%;margin-top:7px;}
+    .settingsline .input-group{float: left;}
+    .settingsline label{float: left; margin-right: 7px; width: auto;}
+    .settingsline > div + div label{margin-top:6px;}
+    .settingsline label + div, .settingsline label + input{width: 68% !important;}
+    .settingsline > div.setting_name{width:42%; margin-right: 0}
+    .settingsline > div.setting_name input{width: 65% !important}
+    .settingsline .checkbox{margin-left:20px;}
+    .form-group{overflow: hidden;}
+ @media(max-width:1202px){
+   .settingsline label{float: none;}
+   .settingsline > div{float: none;}
+   .settingsline .input-group{float: none;}
+   .settingsline label + div, .settingsline label + input{width: 100%;}
+   .settingsline > div.setting_name input{width: 82% !important;}
+   .settingsline > div.setting_name{width: 100%;}
+   .settingsline label + div, .settingsline label + input{width: 100% !important;}
+   .settingsline > div + div{width: 100%; margin: 0;}
+   .settingsline{padding: 0 0 10px 15px;}
+   .settingsline:nth-child(odd){background: #51b0ce;}
+   .settingsline:nth-child(odd) label{color:#fff;}
+   .settingsline:nth-child(even){background: #fff;}
+ }

@@ -1,0 +1,3 @@
+Observer,Location,Animal ID,Behavior Observation Completed,Date of Behavior Observation,Novel Object Test 1 Item,Date of Novel Object Test 1,Time,Latency to Approach,Latency to Touch,Latency to Manipulate/Consume,Novel Object Score,Novel Object Test 1 Item,Date of Novel Object Test 2,Time,Latency to Approach,Latency to Touch,Latency to Manipulate/Consume,Novel Object Score,Total Score,Temperament
+Snelsen,hb1/108,trialanimal,Y,5/12/2014,pretzel,5/13/2014,10:00:00 AM,1,5,7,1,frisbee,5/13/2014,3:00:00 PM,7,20,34,1,2,Exploratory
+Snelsen,hb1/108,trialanimal,Y,5/12/2014,frisbee,5/13/2014,11:00:00 AM,120,130,180,2,pretzel,5/14/2014,11:00:00 AM,180,180,180,3,5,Inhibited
