@@ -10,7 +10,7 @@ nbproject
 .settings
 .jqtxct
 .bowerrc
-
+db.php
 
 # windows thumbnail cache
 Thumbs.db
