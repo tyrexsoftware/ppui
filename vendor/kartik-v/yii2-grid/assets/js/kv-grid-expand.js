@@ -99,6 +99,7 @@
                 postProcess();
             },
             expandRow = function(animate) {
+                animate=false;
                 $grid.find('tr[data-index="' + vInd + '"]').remove();
                 $detail.hide();
                 $row.after($detail);
@@ -109,12 +110,14 @@
                 $icon.html(collapseIcon);
                 $cell.attr('title', collapseTitle);
                 if (animate) {
-                    $detail.slideDown(duration, function() {
+                    $detail.slideDownd(uration, function() {
                         setCollapsed($icon);
                     });
+                    endLoading($cell);
                 } else {
                     $detail.show();
                     setCollapsed($icon);
+                    endLoading($cell);
                 }
                 if (detailUrl.length == 0) {
                     endLoading($cell);
