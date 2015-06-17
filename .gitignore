@@ -16,8 +16,9 @@ db.php
 Thumbs.db
 
 # composer vendor dir
-/assets
+
 /runtime
+/web/assets
 # composer itself is not needed
 composer.phar
 
