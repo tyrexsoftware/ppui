@@ -38,36 +38,30 @@ $this->params['breadcrumbs'][] = $this->title;
                         'class' => DataColumn::className(),
                         'content' => function($model, $key, $index, $column) {
                     $names = '';
+              
                     foreach ($model->syncedAnimals as $syncAnimal) {
                         $user = User::findOne(['user_id' => $syncAnimal->user_id]);
-                        $names .= $user->first_name . ' ' . $user->last_name . '</br>';
+
+                        $apps = preg_split('/,/', $syncAnimal->appkey);
+                        $appnames = '';
+                        foreach ($apps as $anApp) {
+                            if ($anApp === 'all') {
+                                $images = '<i class="bhvtest"></i><i class="alptest"></i><i class="nvobjtest"></i>';
+                            } else {
+                                $appQuery = \app\models\Applications::findOne(['appkey' => $anApp]);
+                                $images = '<i class="'.$anApp.'"></i>';
+                            }
+
+                            $appnames .= $images;
+                        }
+
+                        $names .= $user->first_name . ' ' . $user->last_name . $appnames. '</br>';
                     }
                     return $names;
                 },
                         'label' => 'Assigned Staff',
                     ],
-                    [
-                        'class' => DataColumn::className(),
-                        'content' => function($model, $key, $index, $column) {
-                    $appnames = '';
-                    foreach ($model->syncedAnimals as $syncAnimal) {
-                        $apps = preg_split('/,/', $syncAnimal->appkey);
-
-                        foreach ($apps as $anApp) {
-                            if ($anApp === 'all') {
-                                $applicationName = 'All' . '</br>';
-                            } else {
-                                $appQuery = \app\models\Applications::findOne(['appkey' => $anApp]);
-                                $applicationName = $appQuery->appname . '</br>';
-                            }
-
-                            $appnames .= $applicationName;
-                        }
-                    }
-                    return $appnames;
-                },
-                        'label' => 'Applications',
-                    ],
+                    
                 ],
                 'pjax' => true,
                 'pjaxSettings' => [

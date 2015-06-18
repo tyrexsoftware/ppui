@@ -137,6 +137,10 @@ h1, .h1, h2, .h2, h3, .h3{margin: 0 0 20px;}
 .form-vertical .form-group{overflow: hidden;}
 .field-loginform-rememberme .checkbox{margin: 0 0 0 20px;}
 .form-group.required{margin: 0 0 10px;}
+i{display: inline-block; width: 10px;height:10px;vertical-align: middle; margin: 0 0 0 5px;background-size: 100% 100%; background-repeat: no-repeat;}
+i.nvobjtest{background-image: url(../images/n4novel.png);}
+i.alptest{background-image: url(../images/h4hairlos.png);}
+i.bhvtest{background-image: url(../images/f4focal.png);}
 @media (min-width: 768px){
 .breadcrumb{width: 750px;}
 }
