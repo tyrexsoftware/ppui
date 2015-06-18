@@ -46,10 +46,10 @@ $this->params['breadcrumbs'][] = $this->title;
                         $appnames = '';
                         foreach ($apps as $anApp) {
                             if ($anApp === 'all') {
-                                $images = '<i class="bhvtest"></i><i class="alptest"></i><i class="nvobjtest"></i>';
+                                $images = '<i class="bhvtest" alt=></i><i class="alptest"></i><i class="nvobjtest"></i>';
                             } else {
                                 $appQuery = \app\models\Applications::findOne(['appkey' => $anApp]);
-                                $images = '<i class="'.$anApp.'"></i>';
+                                $images = '<i class="'.$anApp.'" title="'. $appQuery->appname.'"></i>';
                             }
 
                             $appnames .= $images;
