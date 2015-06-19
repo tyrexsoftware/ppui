@@ -52,7 +52,7 @@ class GeneralHelper extends \yii\base\Module {
                             } else {
                                 $queryType = '=';
                             }
-                            $query->andFilterWhere([$queryType, \app\models\Observations::tableName() . '.' . $key, $searchparam]);
+                            $query->andFilterWhere([$queryType, \app\models\Observations::tableName() . '.' . $key, $searchparam, false]);
                         }
                     }  
                 }
