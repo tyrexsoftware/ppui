@@ -46,9 +46,15 @@ class GeneralHelper extends \yii\base\Module {
                             $query->andFilterWhere(['>', \app\models\Observations::tableName() . '.' . $key, $mindate]);
                             $query->andFilterWhere(['<', \app\models\Observations::tableName() . '.' . $key, $maxdate]);
                         } else {
-                            $query->andFilterWhere(['like', \app\models\Observations::tableName() . '.' . $key, $searchparam]);
+                            if(!empty($searchparam)&&strpos($searchparam ,'*')!=false){
+                                $queryType = 'like';
+                                $searchparam = str_replace('*', '', $searchparam);
+                            } else {
+                                $queryType = '=';
+                            }
+                            $query->andFilterWhere([$queryType, \app\models\Observations::tableName() . '.' . $key, $searchparam]);
                         }
-                    }
+                    }  
                 }
             }
         }
