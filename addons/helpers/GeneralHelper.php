@@ -49,7 +49,7 @@ class GeneralHelper extends \yii\base\Module {
                             if (!empty($searchparam) && (strstr($searchparam, '*') != false || strstr($searchparam, '_') != false)) {
 
                                 $searchparam = str_replace('*', '%', $searchparam);
-                                
+
                                 $query->andFilterWhere(['like', \app\models\Observations::tableName() . '.' . $key, $searchparam, false]);
                             } else {
 
@@ -72,6 +72,13 @@ class GeneralHelper extends \yii\base\Module {
             $score = 1;
         }
         return $score;
+    }
+
+    public static function cleansting($string) {
+        $string = str_replace(' ', '-', $string); // Replaces all spaces with hyphens.
+        $string = preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
+
+        return preg_replace('/-+/', '-', $string); // Replaces multiple hyphens with single one.
     }
 
     public static function arrayCartesianProduct($arrays) {

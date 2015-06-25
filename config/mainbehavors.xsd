@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<xs:schema version="1.0"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+    <section name="Normal" key="normal">
+        <value name="Self-groom" id="self-groom"/>
+        <value name="Observer Vigilance" id="observervigilance"/>
+        <value name="Coo" id="coo"/>
+        <value name="Drink" id="drink"/>
+        <value name="Defecate" id="defecate"/>
+        <value name="Inactive" id="inactive"/>
+        <value name="Explore" id="explore"/>
+        <value name="Forage" id="forage"/>
+        <value name="Eat" id="eat"/>
+        <value name="Urinate" id="urinate"/>
+        <value name="Conspecific Vigilance" id="conspecificvigilance"/>
+        <value name="Manipulate toys" id="manipulatetoys"/>
+        <value name="Masturbate" id="masturbate"/>
+        <value name="Locomote" id="locomote"/>
+        <value name="Approach Observer" id="approachobserver"/>                        
+    </section>
+    <section name="Affiliative" key = "affiliative">
+        <value name="Embrace" id="embrace"/>
+        <value name="Conspecific Play" id="conspecificplay"/>
+        <value name="Touch" id="touch" linkable="true"/>
+        <value name="Lip-smack" id="lip-smack"/>
+        <value name="Approach cohort" id="approachcohort"/>
+        <value name="Allogroom" id="allogroom"/>
+        <value name="Genital inspection" id="genitalinspection"/>
+        <value name="Passive contact" id="passivecontact" linkable="true"/>
+        <value name="Face inspection" id="faceinspection"/>        
+    </section>
+    <section name="Aggressive" key="aggressive">
+        <value name="Aggressive Embrace" id="aggressiveembrace"/>
+        <value name="Push" id="push"/>
+        <value name="Slap" id="slap"/>
+        <value name="Stare Threat" id="starethreat"/>
+        <value name="Cage bang" id="cagebang"/>
+        <value name="Canine Sharpening" id="caninesharpening"/>
+        <value name="Displace" id="displace"/>
+        <value name="Fight" id="fight"/>
+        <value name="Open Mouth Threat" id="openmouththreat"/>
+        <value name="Bark" id="bark"/>
+        <value name="Erect Posture" id="erectposture"/>
+        <value name="Pull" id="pull"/>
+        <value name="Retaliate" id="retaliate"/>
+        <value name="Cage Shake" id="cageshake"/>
+        <value name="Grunt" id="grunt"/>
+        <value name="Chase" id="chase"/>
+        <value name="Hold down" id="holddown"/>
+        <value name="Bite" id="bite" linkable="true"/>
+        <value name="Lunge" id="lunge"/>
+        <value name="Cage bounce" id="cagebounce"/>
+        <value name="Yawn" id="yawn"/>
+    </section>
+    <section name="Submissive" key="submissive">
+        <value name="Fear Grimace" id="feargrimace"/>
+        <value name="Rapid Glances" id="rapidglances"/>
+        <value name="Crouch" id="crouch"/>
+        <value name="Avoid" id="avoid"/>
+        <value name="Screech" id="screech"/>
+        <value name="Present" id="present"/>
+    </section>
+    <section name="Abnormal" key = "abnormal">
+        <value name="Hair Loss" id="hairloss"/>
+        <value name="Polydipsia" id="polydipsia"/>
+        <value name="Abnormal Masturbation" id="abnormalmasturbation"/>
+        <value name="Self Injurious Behavior" id="selfinjuriousbehavior"/>
+        <value name="Human Aggression" id="humanaggression"/>
+        <value name="Cage bar strumming" id="cagebarstrumming"/>
+        <value name="Over self-groom" id="overself-groom"/>
+        <value name="Coprophagy" id="coprophagy"/>
+        <value name="Together-together" id="together-together"/>
+        <value name="Mock Bite" id="mockbite" linkable="true"/>
+        <value name="Conspecific Aggression" id="conspecificaggression"/>
+        <value name="Bite/Lick Cage" id="bitelickcage"/>
+        <value name="Over allogroom" id="overallogroom"/>
+        <value name="Urophagy" id="urophagy"/>
+        <value name="Bruxism" id="bruxism"/>
+        <value name="Self-suck" id="self-suck"/>
+        <value name="Object directed aggression" id="objectdirectedaggression"/>
+        <value name="Body-shake" id="body-shake"/>
+        <value name="Hyper-vigilance" id="hyper-vigilance"/>
+        <value name="Hyperphagy" id="hyperphagy"/>
+        <value name="Salute" id="salute"/>
+        <value name="Self-grasp" id="self-grasp"/>
+        <value name="Huddle" id="huddle"/>
+        <value name="Regurgitate" id="regurgitate"/>
+        <value name="Hypophagy" id="hypophagy"/>
+        <value name="Floating Limb" id="floatinglimb"/>
+        <value name="Feces Painting" id="fecespainting"/>
+        <value name="Locomotor Stereotype" id="locomotorstereotype"/>
+    </section>
+    
+        
+</xs:schema>

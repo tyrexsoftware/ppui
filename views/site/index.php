@@ -20,7 +20,8 @@ $homepageinfo = new HomePage();
   <div class="extra_info">
     <h2 class="graph_title"><span>Subscription info</span></h2>
     <ul class="extra_block">
-      <li><span class="label_title">Animals:</span><?=$homepageinfo->totalanimals?></li>
+      <li><span class="label_title">Organization Animals:</span><?=$homepageinfo->totalanimals?></li>
+      <li><span class="label_title">My Animals:</span><?=$homepageinfo->totaluseranimals?></li>
       <li><span class="label_title">Devices:</span><?=$homepageinfo->totaldevices?></li>
       <li><span class="label_title">Users:</span><?=$homepageinfo->totalusers?></li>
       <li><span class="label_title">Expires:</span><?=$homepageinfo->exiperydate?></li>

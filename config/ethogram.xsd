@@ -1,0 +1,57 @@
+<xs:schema version="1.0"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+   
+    <section name="Normal" key="normal">
+        <value name="Inactive" id="inactive"/>
+        <value name="Self-Groom" id="Self_Groom"/>
+        <value name="Observe" id="observe" linkable="true"/>
+        <value name="Manipulate" id="manipulate"/>
+        <value name="Forage" id="forage"/>
+        <value name="Eat/Drink" id="eat_drink"/>
+        <value name="Urinate/Defecate" id="urinate_Defecate"/>
+        <value name="Locomote" id="locomote"/>
+        <value name="Other" id="other" linkable="true"/> 
+    </section>
+    <section name="Abnormal" key="abnormal">
+        <value name="Hair-Pluck" id="hair-pluck" linkable="true"/>
+        <value name="Locomotor Stereotype" id="locomotor_stereotype"/>
+        <value name="Self-directed Stereotype" id="Self-directed_Stereotype"/>
+           <value name="Self Injurious Behavior" id="Self_Injurious_Behavior"/>
+    <value name="Pick/Bite/Lick Cage" id="Pick_Bite_Lick_Cage"/>
+    <value name="Feces Painting/Coprophagy" id="Feces_Painting_Coprophagy"/>
+        <value name="Other" id="other" linkable="true"/> 
+    </section>
+    <section name="Aggressive" key="aggressive">
+        <value name="Open-Mouth Threat" id="open-mouth_threat" linkable="true"/>
+        <value name="Cage Bounce/Shake" id="cage_bounce_shake" linkable="true"/>
+        <value name="Vocalize (Bark)" id="vocalize__bark_" linkable="true"/>
+        <value name="Vocalize (Grunt)" id="vocalize__grunt_" linkable="true"/>
+        <value name="Displace" id="displace" linkable="true"/>
+        <value name="Fight" id="fight" linkable="true"/>
+        <value name="Retaliate" id="retaliate" linkable="true"/>
+        <value name="Chase" id="chase" linkable="true"/>
+        <value name="Other" id="other" linkable="true"/> 
+    </section>
+    <section name="Affiliative" key="affiliative">
+        <value name="Lip-smack" id="lip-smack" linkable="true"/>
+        <value name="Passive Contact" id="passive_contact" linkable="true"/>
+        <value name="Approach" id="approach" linkable="true"/>
+        <value name="Allogroom" id="allogroom" linkable="true"/>
+        <value name="Play" id="play" linkable="true"/>
+        <value name="Genital Inspection" id="genital_inspection" linkable="true"/>
+        <value name="Face Inspection" id="face_inspection" linkable="true"/>
+        <value name="Vocalize (coo)" id="vocalize__coo_" linkable="true"/>
+        <value name="Other" id="other" linkable="true"/> 
+    </section>
+    <section name="Submissive" key="submissive">
+        <value name="Fear Grimace" id="fear_grimace" linkable="true"/>
+        <value name="Rapid Glances" id="rapid_glances" linkable="true"/>
+        <value name="Crouch" id="crouch" linkable="true"/>
+        <value name="Avoid" id="avoid" linkable="true"/>
+        <value name="Vocalize (screech)" id="vocalize__screech_" linkable="true"/>
+        <value name="Present" id="present" linkable="true"/> 
+    </section>
+        
+</xs:schema>
