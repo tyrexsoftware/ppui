@@ -55,11 +55,6 @@ class ApplicationsController extends \app\addons\Controller {
         $db->setting_value = $setting[3];
         $db->save();
     }
-    
-    public function actionEthogrammanagement ()
-    {
-        return $this->render('ethogrammanagement');
-    }
 
     public function actionSavesettings() {
         $model = new BehavioralSettingsForm();

@@ -229,7 +229,7 @@ th{font-size: 11px}
 .extra_info ul{background: #fff; list-style: none; margin: 0; padding: 13px;}
 .extra_info ul li{font-size: 13px; color:#666;}
 .extra_info ul li + li{padding: 10px 0 0;}
-.extra_info ul li span{display: block; float: left; width: 200px;}
+.extra_info ul li span{display: block; float: left; width: 65px;}
 h2.border_title{padding: 11px 0 0; border-top: 1px dotted #b0b0b0; margin: 5px 0 30px;}
 .columns_three{overflow: hidden; height: 1%; margin: 0 -1%;}
 .columns_three > div{float: left; width: 33%; padding: 0 1%; }

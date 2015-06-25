@@ -28,8 +28,7 @@ class Controller extends yii\web\Controller {
             $this->availableApps[] = ['label' => Yii::t('app', 'Manage App Settings'), 'url' => ['applications/settings'], 'visible' => !Yii::$app->user->isGuest];
             $this->availableApps[] = ['label' => Yii::t('app', 'Manage Animals'), 'visible' => !Yii::$app->user->isGuest, 'items' => [
                     ['label' => Yii::t('app', 'Upload Animals'), 'url' => ['applications/uploadanimals', 'visible' => !Yii::$app->user->isGuest]],
-                    ['label' => Yii::t('app', 'Manage Animals'), 'url' => ['applications/manageanimals', 'visible' => !Yii::$app->user->isGuest]],
-                    ['label' => Yii::t('app', 'Ethogram Management'), 'url' => ['applications/ethogrammanagement', 'visible' => !Yii::$app->user->isGuest]]
+                    ['label' => Yii::t('app', 'Manage Animals'), 'url' => ['applications/manageanimals', 'visible' => !Yii::$app->user->isGuest]]
                 ]
             ];
             foreach ($Apps as $item) {
