@@ -39,8 +39,8 @@ class SiteController extends \app\addons\Controller {
     }
 
     public function actionIndex() {
-        
-        
+
+
         return $this->render('index');
     }
 
@@ -51,7 +51,7 @@ class SiteController extends \app\addons\Controller {
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            
+
             return $this->goBack();
         } else {
             return $this->render('login', [
@@ -79,9 +79,49 @@ class SiteController extends \app\addons\Controller {
         ]);
     }
 
-
     public function actionAbout() {
         return $this->render('about');
+    }
+
+    public function actionXml() {
+        $behaviorsXML = simplexml_load_file(Yii::getAlias('@app') . '/config/ethogram.xsd');
+        $behaviorsGrid = array();
+        $container_order = 0;
+        foreach ($behaviorsXML as $box => $values) {
+            $eithogramContainer = new \app\models\EthogramContainer();
+            
+            $containername = (string) $values['name'];
+            $eithogramContainer->container_key = \app\addons\helpers\GeneralHelper::cleansting((string) $values['name']);
+            $eithogramContainer->container_name =(string) $values['name'];
+            $eithogramContainer->sort_order = $container_order;
+            $eithogramContainer->user_id = Yii::$app->user->identity->user_id;
+            if($eithogramContainer->save()){
+                $container_id = $eithogramContainer->container_id;
+            }
+            $container_order++;
+            unset($eithogramContainer);
+            $elements_order = 0;     
+            foreach ($values->value as $id => $conainers) {
+                $eithogramElements = new \app\models\EthogramElements();
+                $eithogramElements->container_id = $container_id;
+                $eithogramElements->element_key = \app\addons\helpers\GeneralHelper::cleansting((string) $conainers['name']);
+                $eithogramElements->element_name = (string) $conainers['name'];
+                $eithogramElements->sort_order = $elements_order;
+                $eithogramElements->recepient = $conainers['linkable'] && (bool) $conainers['linkable'] ? 1 : 0;
+                
+                echo '<pre>';
+                var_dump($eithogramElements->save());
+                var_dump($eithogramElements->getErrors());
+                echo '</pre>';
+                unset($eithogramContainer);
+                $elements_order++;
+
+                $behaviorsGrid[(string) $values['name']][] = [
+                    'name' => (string) $conainers['name'],
+                    'linkable' => null !== $conainers['linkable'] && (bool) $conainers['linkable'] ? true : false];
+            }
+        }
+        die();
     }
 
 }

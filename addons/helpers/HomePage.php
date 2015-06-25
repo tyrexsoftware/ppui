@@ -13,6 +13,10 @@ class HomePage extends Object {
     public function getTotalAnimals() {
         return Animals::find()->andFilterWhere(['=', 'organization_id', Yii::$app->user->identity->organization_id])->count();
     }
+    public function getTotalUserAnimals() {
+        return Animals::find()->andFilterWhere(['=', 'organization_id', Yii::$app->user->identity->organization_id])->
+                andFilterWhere(['=','user_id', Yii::$app->user->identity->user_id])->count();
+    }
 
     public function getTotalDevices() {
         return AccessLog::find()->andFilterWhere(['organization_id' => Yii::$app->user->identity->organization_id])->select(['udid'])->distinct()->count();
