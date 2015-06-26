@@ -1,9 +1,10 @@
 <?php
-        $this->registerJsFile('@web/js/ethogram.js');
+$this->registerJsFile('@web/js/ethogram.js', ['position' => \yii\web\View::POS_END]);
+$this->registerJs('$(".manage_blocks").ethogram();');
 ?>
 
-<div class="manage_animals">
-    <div>
+<div class="manage_blocks">
+    <div class="ma_block">
         <div class="m_title_wrapper">
             <div class="m_title">Aggressive</div>
             <div class="m_title_edit">
@@ -13,15 +14,16 @@
             </div>
         </div>
         <div class="m_slide">
-            <div class="m_text"><span>Touch</span><a class="delete" href="#"></a><a class="edit" href="#"></a></div>
-            <div class="m_text"><span>Touch</span><a class="delete" href="#"></a><a class="edit" href="#"></a></div>
-            <div id="m_action">Add new action</div>
+            <div class="m_text"><input type="text" placeholder="Touch" class="newInput"><a class="delete" href="#"></a><a class="edit" href="#"></a></div>
+            <div class="m_text"><input type="text" placeholder="Touch" class="newInput"><a class="delete" href="#"></a><a class="edit" href="#"></a></div>
+            <div class="m_action">Add new action</div>
         </div>
     </div>
-    
-    <hr class="sep"/>
-
-    <div class="m_type_text"><input placeholder="Type a name of behavior" type="text"></div>
-    <div class="m_buttons"><button class="m_add_action">Add new action</button></div>
+    <div class="ma_block inactive">
+        <div class="m_slide">  
+            <div class="m_text"><input type="text" placeholder="Type a name of behavior" class="newInput"><a class="delete" href="#"></a><a class="edit" href="#"></a></div>
+            <div class="m_buttons"><div class="m_action">Add new action</div></div>
+        </div>
+    </div>
 </div>
-<script>$(ehtogram)</script>
+

@@ -131,6 +131,9 @@ class ApplicationsController extends \app\addons\Controller {
         \Yii::$app->response->format = 'json';
         return $reply;
     }
+    public function actionComposeethogram() {
+        
+    }
 
     public function actionUploadfile() {
 
