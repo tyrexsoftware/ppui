@@ -21,7 +21,7 @@
         "kartik-v/yii2-widgets": "*",
         "kartik-v/yii2-grid": "*",
         "kartik-v/yii2-mpdf": "~1.0",
-        "yiisoft/yii2-jui": "*",
+        "yiisoft/yii2-jui": "^2.0",
         "kartik-v/yii2-date-range": "dev-master",
         "kartik-v/yii2-krajee-base": "dev-master",
         "kolyunya/yii2-bootstrap-radio-list": "dev-master"

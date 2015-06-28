@@ -271,7 +271,7 @@ a.edit{width:18px;height:16px;background:url(../images/edit.png) no-repeat;}
 .m_buttons{background:#e7e7e7;padding:2%;}
 .m_add_action{background:#cecece;padding:10px;font-size:18px;border-radius:5px;color:#fff;text-align:center;width:50%;border:none;}
 .ma_block{padding: 0 0 29px;border-bottom: 1px dotted #b0b0b0; margin: 0 0 29px;}
-.newInput{color:#666;padding:0;border:none;}
+.newInput{color:#666;padding:0;border:none; width: 90%}
 .inactive .m_action{background: #cecece; padding: 10px; font-size: 18px; border-radius: 5px; color: #fff; text-align: center; width: 50%; border: none;margin: 0 0 2%;}
 .inactive .newInput{ border: 1px solid #92d9e6;width: 100%; padding: 10px 13px; border-radius: 5px; box-sizing: border-box; font-size: 20px; -webkit-box-shadow: inset 0px 2px 4px 0px rgba(189,189,189,1);
   -moz-box-shadow: inset 0px 2px 4px 0px rgba(189,189,189,1); box-shadow: inset 0px 2px 4px 0px rgba(189,189,189,1);}
