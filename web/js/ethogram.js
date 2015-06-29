@@ -4,14 +4,20 @@
  * and open the template in the editor.
  */;
 
-(function ($) {
+jQuery(document).ready(function() {
+    $(".manage_blocks").sortable({items: '.ma_block:not(.inactive)'});
+    $(".manage_blocks").disableSelection();
+});
+
+(function($) {
     var title = "<div class=\"m_title_wrapper\"><div class=\"m_title\">Aggressive</div><div class=\"m_title_edit\"><a class=\"collapseL\" href=\"#\"></a><a class=\"delete\" href=\"#\"></a><a class=\"edit\" href=\"#\"></a></div></div>";
     var field = "<div class=\"m_text\"><input type=\"text\" placeholder=\"Touch\" class=\"newInput\"><a class=\"delete\" href=\"#\"></a><a class=\"edit\" href=\"#\"></a></div>";
     var button = "<div class=\"m_action\">Add new action</div>";
     var inactive = "<div class=\"ma_block inactive\"><div class=\"m_slide\"><div class=\"m_text\"><input type=\"text\" placeholder=\"Type a name of behavior\" class=\"newInput\"><a class=\"delete\" href=\"#\"></a><a class=\"edit\" href=\"#\"></a></div><div class=\"m_buttons\"><div class=\"m_action\">Add new action</div></div></div></div>";
 
+
     var method = {
-        initialize: function () {
+        initialize: function() {
 
             var topelement = $(".manage_blocks");
             $(topelement).prepend(inactive);
@@ -23,24 +29,24 @@
             //      }).enterKey();
             return this;
         },
-        inactiveTrigger: function (element) {
+        inactiveTrigger: function(element) {
             console.log(element);
-            $(".m_text > input", element).on('keypress', function () {
+            $(".m_text > input", element).on('keypress', function() {
 
                 method.cloneInactive(this);
 
                 return this;
             })
         },
-        cloneInactive: function (initializedelement) {
+        cloneInactive: function(initializedelement) {
 
             var element = $(".ma_block.inactive:last");
             var newelement = $(element).clone().appendTo('.manage_blocks');
             $(".m_text > input", element).off('keypress').on('keypress', function() {
-                 if(event.which === 13){
-                     var savebutton = $(".m_action", element);
-                     $(savebutton).click();
-                 }
+                if (event.which === 13) {
+                    var savebutton = $(".m_action", element);
+                    $(savebutton).click();
+                }
             });
             method.inactiveTrigger(newelement);
             method.activateContainer(element);
@@ -48,51 +54,54 @@
 
             return this;
         },
-        activateContainer: function (element) {
+        activateContainer: function(element) {
 
             element.removeClass("inactive");
             var savebutton = $(".m_action", element);
             var deletebutton = $(".m_text .delete", element);
             var editbutton = $(".m_text .edit", element);
-            $(deletebutton).on('click', function(){$(element).remove()});
+            $(deletebutton).on('click', function() {
+                $(element).remove()
+            });
             $(editbutton).hide();
-            $(savebutton).unwrap().text("Save").on('click', function () {
+            $(savebutton).unwrap().text("Save").on('click', function() {
 
-                    method.saveContainer(savebutton);
-                    var textval = $(".m_text > input", element).val();
-                    method.addTitle(element, textval);
+                method.saveContainer(savebutton);
+                var textval = $(".m_text > input", element).val();
+                method.addTitle(element, textval);
             });
 
             return this;
         },
-        saveContainer: function (element) {
+        saveContainer: function(element) {
 
             element.remove();
             return this;
         },
-        addTitle: function (element, textval) {
+        addTitle: function(element, textval) {
 
-console.log(element);
+            console.log(element);
             var newelement = $(element).prepend(title);
             $(".m_title", newelement).text(textval);
 
 
             $(".m_text", element).remove();
             var addbehavior = $(".m_slide", element).prepend(button);
+            $(".m_slide", element).sortable({items: 'div:not(.m_action)'});
 
-            $(".m_action", addbehavior).on('click', function () {
+            $(".m_action", addbehavior).on('click', function() {
                 $(".m_action", element).before(field)
             });
-            $(".m_title_edit > .delete").on('click', function () {
-                $(element).remove();    
+            $(".m_title_edit > .delete").on('click', function() {
+                $(element).remove();
             });
-            $(".m_title_edit > .edit").on('click', function () {
-                var text = $(".m_title", element).text();    
+            $(".m_title_edit > .edit").on('click', function() {
+                var text = $(".m_title", element).text();
                 $(".m_title", element).remove();
                 $(".m_title_wrapper", element).prepend(field);
-                
-                
-                
+
+
+
             });
 
             return this;
@@ -100,7 +109,7 @@ console.log(element);
         }
     };
 
-    $.fn.ethogram = function (call) {
+    $.fn.ethogram = function(call) {
         if (method[call]) {
             return method[call].apply(this, Array.prototype.slice.call(arguments, 1));
         } else if (typeof call === 'object' || !call) {
@@ -109,9 +118,9 @@ console.log(element);
             $.error('Method ' + call + ' not found in jQuery.test');
         }
     };
-    $.fn.enterKey = function (fnc) {
-        return this.each(function () {
-            $(this).keypress(function (ev) {
+    $.fn.enterKey = function(fnc) {
+        return this.each(function() {
+            $(this).keypress(function(ev) {
                 var keycode = (ev.keyCode ? ev.keyCode : ev.which);
                 if (keycode == '13') {
                     fnc.call(this, ev);
@@ -120,3 +129,5 @@ console.log(element);
         })
     }
 })(jQuery);
+
+
