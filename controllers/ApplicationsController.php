@@ -133,6 +133,18 @@ class ApplicationsController extends \app\addons\Controller {
     }
     public function actionComposeethogram() {
         
+        if (Yii::$app->request->isPost) {
+            switch(Yii::$app->request->post('section')){
+                case 'container':
+                    $model = new \app\models\EthogramContainer();
+                    
+                    
+                    break;
+                case 'behavior':
+                    break;
+            }
+        }
+        
     }
 
     public function actionUploadfile() {
