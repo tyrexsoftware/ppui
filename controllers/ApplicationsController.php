@@ -55,9 +55,29 @@ class ApplicationsController extends \app\addons\Controller {
         $db->setting_value = $setting[3];
         $db->save();
     }
-    
-    public function actionEthogrammanagement ()
-    {
+
+    public function actionEthogramdata() {
+
+        $ethogramcontainer = \app\models\EthogramContainer::find()
+                ->where(['user_id' => 11])
+                ->orderBy(['sort_order' => SORT_ASC])
+                ->all();
+        $ethogramArray = [];
+        foreach ($ethogramcontainer as $subject) {
+            $behavioursset = \app\models\EthogramElements::find()
+                    ->where(['container_id' => $subject->container_id])
+                    ->orderBy(['sort_order' => SORT_ASC])
+                    ->all();
+            foreach ($behavioursset as $behaviour) {
+                $ethogramArray[$subject->container_name][] = $behaviour->element_name;
+            }
+        }
+        \Yii::$app->response->format = 'json';
+        return $ethogramArray;
+    }
+
+    public function actionEthogrammanagement() {
+
         return $this->render('ethogrammanagement');
     }
 
@@ -67,7 +87,7 @@ class ApplicationsController extends \app\addons\Controller {
 
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            
+
             $animalscsv = UploadedFile::getInstance($model, 'xml_behavors');
             for ($i = 0; $i <= 3; $i++) {
 
@@ -79,7 +99,7 @@ class ApplicationsController extends \app\addons\Controller {
             self::updateSetting(['nvobjtest', Yii::$app->user->identity->organization_id, 'novel_object_observation_time', $model->novel_object_observation_time]);
             return $this->redirect('settings');
         } else {
-            
+
             return $this->render('settings', array('model' => $model));
         }
     }
@@ -94,9 +114,9 @@ class ApplicationsController extends \app\addons\Controller {
             $animals->andFilterWhere(['=', AnimalsSync::tableName() . '.user_id', Yii::$app->user->identity->user_id]);
         }
         $animals->joinWith('syncedAnimals');
-        
-        $animals->orderBy(['name'=> 'SORT_ASC']);
-        
+
+        $animals->orderBy(['name' => 'SORT_ASC']);
+
         $dataProvider = new ActiveDataProvider([
             'pagination' => ['pagesize' => 10],
             'query' => $animals,]);
@@ -111,13 +131,13 @@ class ApplicationsController extends \app\addons\Controller {
 
         return $this->render('animalsupload', array('model' => $model));
     }
-    
-    public function actionAddsyncanimals(){
+
+    public function actionAddsyncanimals() {
         $animals = Yii::$app->request->post('animals');
         $users = Yii::$app->request->post('users');
         $applications = Yii::$app->request->post('applications');
         foreach ($animals as $animal) {
-            AnimalsSync::deleteAll(['animal_id'=> $animal]);
+            AnimalsSync::deleteAll(['animal_id' => $animal]);
         }
         $insert_array = \app\addons\helpers\GeneralHelper::arrayCartesianProduct([$animals, $users]);
         foreach ($insert_array as $data) {
@@ -127,24 +147,39 @@ class ApplicationsController extends \app\addons\Controller {
             $syncAnimals->appkey = implode(',', $applications);
             $syncAnimals->save();
         }
-        $reply = ['message'=>'success', 'jsaction'=>'reload'];
+        $reply = ['message' => 'success', 'jsaction' => 'reload'];
         \Yii::$app->response->format = 'json';
         return $reply;
     }
-    public function actionComposeethogram() {
-        
+
+    public function actionEthogramcontainer() {
+
+        \Yii::$app->response->format = 'json';
+
         if (Yii::$app->request->isPost) {
-            switch(Yii::$app->request->post('section')){
-                case 'container':
-                    $model = new \app\models\EthogramContainer();
-                    
-                    
-                    break;
-                case 'behavior':
-                    break;
+
+            if (empty(Yii::$app->request->post('subject')) || is_null(Yii::$app->request->post('subject'))) {
+                $reply = ['transaction' => 'error', 'message' => 'Subject is Empty'];
+                return $reply;
             }
+
+            if (!empty(Yii::$app->request->post('container_id')) || !is_null(Yii::$app->request->post('container_id'))) {
+                $model = \app\models\EthogramContainer::findOne(['container_id' => Yii::$app->request->post('container_id')]);
+            } else {
+                $model = new \app\models\EthogramContainer();
+            }
+
+
+            $model->container_key = \app\addons\helpers\GeneralHelper::cleansting((string) Yii::$app->request->post('subject'));
+            $model->container_name = Yii::$app->request->post('subject');
+            $model->sort_order = Yii::$app->request->post('position');
+            $model->user_id = Yii::$app->user->identity->user_id;
+
+            $model->save();
+            $reply = ['transaction' => 'success'];
+
+            //Yii::$app->request->post('section');
         }
-        
     }
 
     public function actionUploadfile() {
@@ -167,36 +202,33 @@ class ApplicationsController extends \app\addons\Controller {
                 $animalsList = array_map('str_getcsv', file($newFilePath));
 
                 if (Yii::$app->request->post('typeofupload') == 'replace') {
-                    
+
                     $deleteAnimals = AnimalsSync::find()->where(['user_id' => Yii::$app->user->identity->user_id])->all();
-                    foreach ($deleteAnimals as $todeleteAnimal)
-                    {
-                    
+                    foreach ($deleteAnimals as $todeleteAnimal) {
+
                         $todeleteAnimal->delete();
                     }
                 }
 
                 foreach (array_slice($animalsList, 1) as $animal) {
                     $usersDb = new Animals();
-                    if(Yii::$app->request->post('typeofupload') == 'merge'){
-                       $merge = Animals::find()
-                               ->andFilterWhere(['=', 'name', $animal[0]])  
-                               ->andFilterWhere(['=', 'location', $animal[1]])  
-                               ->andFilterWhere(['=', 'user_id', Yii::$app->user->identity->user_id])  
-                               ->andFilterWhere(['=', 'organization_id', Yii::$app->user->identity->organization_id]);
-                       if($merge->one()!==null)
-                       {
-                           continue;
-                       }
+                    if (Yii::$app->request->post('typeofupload') == 'merge') {
+                        $merge = Animals::find()
+                                ->andFilterWhere(['=', 'name', $animal[0]])
+                                ->andFilterWhere(['=', 'location', $animal[1]])
+                                ->andFilterWhere(['=', 'user_id', Yii::$app->user->identity->user_id])
+                                ->andFilterWhere(['=', 'organization_id', Yii::$app->user->identity->organization_id]);
+                        if ($merge->one() !== null) {
+                            continue;
+                        }
                     };
-        
+
                     $usersDb->saveAnimals($animal, Yii::$app->user->identity->user_id);
                     $animalsSync = new AnimalsSync;
                     $animalsSync->user_id = Yii::$app->user->identity->user_id;
                     $animalsSync->animal_id = $usersDb->animal_id;
                     $animalsSync->appkey = 'all';
                     $animalsSync->save();
-                    
                 }
                 unlink($newFilePath);
                 return \yii\helpers\Json::encode('success');
