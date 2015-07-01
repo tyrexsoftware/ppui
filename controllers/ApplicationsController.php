@@ -59,7 +59,7 @@ class ApplicationsController extends \app\addons\Controller {
     public function actionEthogramdata() {
 
         $ethogramcontainer = \app\models\EthogramContainer::find()
-                ->where(['user_id' => 20])
+                ->where(['user_id' => 11])
                 ->orderBy(['sort_order' => SORT_DESC])
                 ->all();
         $ethogramArray = [];
