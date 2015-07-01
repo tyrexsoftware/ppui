@@ -33,10 +33,10 @@ jQuery(document).ready(function () {
 
             self.ethogram = $(this);
             var inactive = $('<div/>', {class:containerclass+' inactive'})
-                    .prepend($('<div/>', {class:boxclass}))
+                    //.prepend($('<div/>', {class:boxclass}))
                     .prepend($('<div/>', {class:textwrapperclass})
                     .prepend($('<input/>',{type:'text', class:'newInput', placeholder:'Type a name of behavior'})))
-                    .after($('<div/>', {class:'m_buttons'}));
+                    ;
 
             $(self.ethogram).prepend(inactive);
 
