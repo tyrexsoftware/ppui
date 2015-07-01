@@ -63,20 +63,25 @@ class ApplicationsController extends \app\addons\Controller {
                 ->orderBy(['sort_order' => SORT_DESC])
                 ->all();
         $ethogramArray = [];
+        $c = 0;
         
         foreach ($ethogramcontainer as $subject) {
             $behavioursset = \app\models\EthogramElements::find()
                     ->where(['container_id' => $subject->container_id])
                     ->orderBy(['sort_order' => SORT_DESC])
                     ->all();
-            $ethogramArray[$subject->sort_order]['name']=$subject->container_name;
-            $ethogramArray[$subject->sort_order]['id']=$subject->container_id;
-            $ethogramArray[$subject->sort_order]['sort_order']=$subject->sort_order;
-            
+            $ethogramArray[$c]['id']=$subject->container_id;
+            $ethogramArray[$c]['name']=$subject->container_name;
+            $ethogramArray[$c]['sort_order']=$subject->sort_order;
+            $b = 0;
             foreach ($behavioursset as $behaviour) {
-                $ethogramArray[$subject->sort_order]['values'][$behaviour->element_id] = $behaviour->element_name;
+                
+                $ethogramArray[$c]['values'][$b]['name'] = $behaviour->element_name;
+                $ethogramArray[$c]['values'][$b]['id'] = $behaviour->element_id;
+                $b++;
                 
             }
+            $c++;
         }
 
         \Yii::$app->response->format = 'json';

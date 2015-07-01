@@ -17,7 +17,10 @@ jQuery(document).ready(function () {
 (function ($) {
     var title = "<div class=\"m_title_wrapper\"><div class=\"m_title\"></div></div>";
     var buttonClass = 'm_action';
-    var inactive = "<div class=\"ma_block inactive\"><div class=\"m_slide\"><div class=\"m_text\"><input type=\"text\" placeholder=\"Type a name of behavior\" class=\"newInput\"><a class=\"delete\" href=\"#\"></a><a class=\"edit\" href=\"#\"></a></div><div class=\"m_buttons\"><div class=\"m_action\">Add new action</div></div></div></div>";
+   // var inactive = "<div class=\"ma_block inactive\"><div class=\"m_slide\"><div class=\"m_text\">
+   // <input type=\"text\" placeholder=\"Type a name of behavior\" class=\"newInput\">
+   // <a class=\"delete\" href=\"#\"></a><a class=\"edit\" href=\"#\"></a></div>
+   // <div class=\"m_buttons\"><div class=\"m_action\">Add new action</div></div></div></div>";
     var containerclass = 'ma_block';
     var boxclass = 'm_slide';
     var textwrapperclass = 'm_text';
@@ -29,6 +32,11 @@ jQuery(document).ready(function () {
         initialize: function (params) {
 
             self.ethogram = $(this);
+            var inactive = $('<div/>', {class:containerclass+' inactive'})
+                    .prepend($('<div/>', {class:boxclass}))
+                    .prepend($('<div/>', {class:textwrapperclass})
+                    .prepend($('<input/>',{type:'text', class:'newInput', placeholder:'Type a name of behavior'})))
+                    .after($('<div/>', {class:'m_buttons'}));
 
             $(self.ethogram).prepend(inactive);
 
@@ -51,12 +59,11 @@ jQuery(document).ready(function () {
 
 
         },
-        addContainer: function (containerId, containervalues) {
-
+        addContainer: function (container, containervalues) {
             var collapseButton = $('<a/>', {class: 'collapseL'}).on('click', function () {
             });
             var deleteButton = $('<a/>', {class: 'delete'}).on('click', function () {
-                method.editContainer({id: containerId, action: 'delete'});
+                method.editContainer({id: container.id, action: 'delete'});
             });
             var editButton = $('<a/>', {class: 'edit'}).on('click', function () {
             });
@@ -66,40 +73,44 @@ jQuery(document).ready(function () {
                     .prepend(collapseButton);
 
             var containerelement = $('<div/>', {class: containerclass}).prependTo(self.ethogram);
-            
+
             //add button and make tiles sortable;
-            var newActionButton = $('<div/>',{class:buttonClass})
+
+            var newActionButton = $('<div/>', {class: buttonClass})
                     .text('New Behavior')
-                    .on('click', function(){
-                        $('<div/>', {class: textwrapperclass}).insertBefore('.'+buttonClass, containerelement)
-                        .prepend($('<input>',{type:'text', class:'newInput'}));
+                    .on('click', function () {
+                                    console.log('.' + buttonClass, containerelement);
+                        $('<div/>', {class: textwrapperclass}).insertBefore($(this))
+                                .prepend($('<input>', {type: 'text', class: 'newInput'}))
+                                .prepend($('<a/>', {class: 'delete'}).on('click', function(){
+                                    $(this).closest('div').remove()
+                        }));
                     });
             //createa a button that adds an empty text field
             newActionButton.prependTo($('<div/>', {class: boxclass}).sortable({
-                connectWith: "."+boxclass,
+                connectWith: "." + boxclass,
                 items: 'div:not(.m_action)'}).prependTo(containerelement));
-            console.log(containervalues.name);
             $(title).prependTo(containerelement)
                     .find('.m_title')
                     .text(containervalues.name).after(buttonsRow);
 
             $.each(containervalues.values, function (i, value) {
-                method.addBehavior(value, containerelement, i)
+                method.addBehavior(value, containerelement)
             })
             return this;
 
         },
-        addBehavior: function (behavior, containerelement, element_id) {
+        addBehavior: function (behavior, containerelement) {
 
             var deleteButton = $('<a/>', {class: 'delete'}).on('click', function () {
 
             });
             var editButton = $('<a/>', {class: 'edit'}).on('click', function () {
-                console.log(element_id)
+                console.log(behavior.id)
             });
             var buttonWrapper = $('<div/>', {class: textwrapperclass})
                     .prependTo($('.' + boxclass, containerelement));
-            $('<input/>', {type: 'text', placeholder: behavior, class: 'newInput'}).
+            $('<input/>', {type: 'text', placeholder: behavior.name, class: 'newInput'}).
                     prependTo(buttonWrapper)
                     .after(editButton)
                     .after(deleteButton);
