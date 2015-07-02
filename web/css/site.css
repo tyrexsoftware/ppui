@@ -278,9 +278,10 @@ a.collapseL{width:29px;height:29px;background:url(../images/plus_minus.png) no-r
 .inactive .m_slide{background: none;box-shadow:none;padding: 0;padding: 0;}
 
 
-a.delete, a.edit, a.success, a.drag, a.loadingIcon{margin:0 0 0 10px;display:inline-block;font-size:24px;font-family: 'FontAwesome';}
-a.delete:hover, a.edit:hover, a.success:hover, a.drag:hover, a.loadingIcon:hover{text-decoration:none;}
-a.success{color:#8ccd2f;}
+a.delete, a.edit, a.success_ok, a.success.pendning, a.drag, a.loadingIcon{margin:0 0 0 10px;display:inline-block;font-size:24px;font-family: 'FontAwesome';}
+a.delete:hover, a.edit:hover, a.success.ok:hover, a.success.pendning:hover, a.drag:hover, a.loadingIcon:hover{text-decoration:none;}
+a.success.ok{color:#8ccd2f;}
+a.success.pendning{color: #23527c;}
 .m_text > a{font-size:18px;}
 a.drag{cursor: pointer;}
 .subjectInput{border:none; padding:0; width:100%}

@@ -15,12 +15,21 @@ jQuery(document).ready(function() {
 });
 
 (function($) {
-    var title = "<div class=\"m_title_wrapper\"><div class=\"m_title\"></div></div>";
     var buttonClass = 'm_action';
     var containerclass = 'ma_block';
     var boxclass = 'm_slide';
     var textwrapperclass = 'm_text';
-    var subjectInput = $('<input/>', {type: 'text', class: 'subjectInput'});
+
+
+    var subjectInput = {type: '<input/>', values: {type: 'text', class: 'subjectInput'}};
+
+    var collapseButton = {type: '<a/>', values: {class: 'collapseL'}};
+    var deleteButton = {type: '<a/>', values: {class: 'delete fa-trash-o'}};
+    var editButton = {type: '<a/>', values: {class: 'edit fa-edit'}};
+    var dragButton = {type: '<a/>', values: {class: 'drag fa-arrows'}};
+    var successOkButton = {type: '<a/>', values: {class: 'success ok fa-check'}};
+    var successPendingButton = {type: '<a/>', values: {class: 'success pendning fa-check'}};
+
 
     var ethogram;
 
@@ -28,14 +37,31 @@ jQuery(document).ready(function() {
         initialize: function(params) {
 
             self.ethogram = $(this);
-            var inactive = $('<div/>', {class: containerclass + ' inactive'})
-                    .prepend($('<div/>', {class: boxclass})
-                            .prepend($('<div/>', {class: textwrapperclass})
-                                    .prepend($('<input/>', {type: 'text', class: 'newInput', placeholder: 'Type a name of behavior'}))
-                                    .on('keypress', method.activateContainer))
-                            .append($('<div/>', {class: 'm_buttons'})
-                                    .prepend($('<div/>', {class: buttonClass}).text('Add new action')))
-                            );
+//            var inactive = $('<div/>', {class: containerclass + ' inactive'})
+//                    .prepend($('<div/>', {class: boxclass})
+//                            .prepend($('<div/>', {class: textwrapperclass})
+//                                    .prepend($('<input/>', {type: 'text', class: 'newInput', placeholder: 'Type a name of behavior'}))
+//                                    .on('keyup', method.activateContainer))
+//                                    .prepend($('<div/>', {class: buttonClass}).text('Add new action')))
+//                            );
+
+            var inactive = $('<div/>', {class: buttonClass + ' inactive'})
+                    .text('Add new section')
+                    .on('click', function() {
+                        method.addContainer('new', {name: '', values: {}})
+                        $('.subjectInput').last().focus();
+                        $('.success.pendning').last().on('click', function(event)
+                        {
+                            var element = $(event.target).parent().parent().parent();
+                            var value = $('.subjectInput', element).val();
+                            
+                            method.saveContainer(element, value);
+                        }
+                        )
+
+                    });
+            ;
+
             $(self.ethogram).prepend(inactive);
 
 
@@ -51,23 +77,23 @@ jQuery(document).ready(function() {
 
 
         },
-        addContainer: function(container, containervalues) {
-            var collapseButton = $('<a/>', {class: 'collapseL'}).on('click', function() {
-            });
-            var deleteButton = $('<a/>', {class: 'delete fa-trash-o'}).on('click', function() {
-                method.editContainer({id: container.id, action: 'delete'});
-            });
-            var editButton = $('<a/>', {class: 'edit fa-edit'}).on('click', function() {
-            });
-            var dragButton = $('<a/>', {class: 'drag fa-arrows'});
-            var successButton = $('<a/>', {class: 'success fa-check'});
+        addContainer: function(type, containervalues) {
 
             var buttonsRow = $('<div/>', {class: 'm_title_edit'})
-                    .prepend(dragButton)
-                    .prepend(successButton)
-                    .prepend(editButton)
-                    .prepend(deleteButton)
-                    .prepend(collapseButton);
+            if (type == 'new') {
+
+                $(buttonsRow)
+                        .prepend(method.createElement(successPendingButton))
+                        .prepend(method.createElement(deleteButton));
+
+            } else {
+                $(buttonsRow).prepend(method.createElement(dragButton))
+//                    .prepend(successButton)
+                        .prepend(method.createElement(editButton))
+                        .prepend(method.createElement(deleteButton))
+                        .prepend(method.createElement(collapseButton));
+
+            }
 
             var containerelement = $('<div/>', {class: containerclass}).insertBefore($('.inactive'));
 
@@ -87,14 +113,11 @@ jQuery(document).ready(function() {
                 connectWith: "." + boxclass,
                 items: 'div:not(.m_action)'}).prependTo(containerelement));
 
-            var subject =  $(subjectInput).val(containervalues.name);
-            console.log(subject);
-            var title = $('<div/>', {class: 'm_title_wrapper'})
-                    .prepend($('<div/>', {class: 'm_title'})
-                            .prepend(subject))
-                    .append(buttonsRow)
-                    ;
-// placeholder: containervalues.name, value: containervalues.name,
+
+            var title = method.createTitle($(method.createElement(subjectInput))
+                    .val(containervalues.name)
+                    .attr('placeholder', containervalues.name)).append(buttonsRow);
+
             $(title).prependTo(containerelement);
 
             $.each(containervalues.values, function(i, value) {
@@ -102,6 +125,9 @@ jQuery(document).ready(function() {
             })
             return this;
 
+        },
+        createElement: function(elementObject) {
+            return $(elementObject.type, elementObject.values);
         },
         addBehavior: function(behavior, containerelement) {
 
@@ -121,100 +147,22 @@ jQuery(document).ready(function() {
             return this;
 
         },
+        createTitle: function(inputField) {
+
+            return $('<div/>', {class: 'm_title_wrapper'})
+                    .prepend($('<div/>', {class: 'm_title'})
+                            .prepend(inputField))
+        },
         editContainer: function(params) {
 
 
         },
-        activateContainer: function(params) {
-            var element = $($(params.target).closest('.inactive'));
-            $(element).clone().appendTo(self.ethogram);
-            $(element).prepend(title);
-            //var ;
+        saveContainer: function(element, value) {
 
-            console.log(container);
-
-
-
-            //  method.addContainer('', );
-
-        },
-        inactiveTrigger: function(element) {
-            $(".m_text > input", element).on('keypress', function() {
-
-                method.cloneInactive(this);
-
-                return this;
-            })
-        },
-        cloneInactive: function(initializedelement) {
-
-            var element = $(".ma_block.inactive:last");
-            var newelement = $(element).clone().appendTo('.manage_blocks');
-            $(".m_text > input", element).off('keypress').on('keypress', function() {
-                if (event.which === 13) {
-                    var savebutton = $(".m_action", element);
-                    $(savebutton).click();
-                }
-            });
-            method.inactiveTrigger(newelement);
-            method.activateContainer(element);
-
-
-            return this;
-        },
-        activateContainerOLD: function(element) {
-
-            element.removeClass("inactive");
-            var savebutton = $(".m_action", element);
-            var deletebutton = $(".m_text .delete", element);
-            var editbutton = $(".m_text .edit", element);
-            $(deletebutton).on('click', function() {
-                $(element).remove()
-            });
-            $(editbutton).hide();
-            $(savebutton).unwrap().text("Save").on('click', function() {
-                var textval = $(".m_text > input", element).val();
-                method.saveContainer({subject: textval, position: element.index()});
-                method.addTitle(element, textval);
-            });
-
-            return this;
-        },
-        saveContainer: function(values) {
-
-            $.post("ethogramcontainer", values, function(data) {
-
-
-            });
-
-            return this;
-        },
-        addTitleOLD: function(element, textval) {
-
-            var newelement = $(element).prepend(title);
-            $(".m_action", element).remove();
-            $(".m_title", newelement).text(textval);
-
-
-            $(".m_text", element).remove();
-            var addbehavior = $(".m_slide", element).prepend(button);
-            $(".m_slide", element).sortable({
-                connectWith: ".m_slide",
-                items: 'div:not(.m_action)'});
-
-            $(".m_action", addbehavior).on('click', function() {
-                $(".m_action", element).before(field)
-            });
-            $(".m_title_edit > .delete", element).on('click', function() {
-                $(element).remove();
-            });
-            $(".m_title_edit > .edit", element).on('click', function() {
-                var text = $(".m_title", element).text();
-                $(".m_title", element).remove();
-                $(".m_title_wrapper", element).prepend(field);
-            });
-            return this;
+            console.log($(element).index());
+            
         }
+
     };
 
     $.fn.ethogram = function(call) {
