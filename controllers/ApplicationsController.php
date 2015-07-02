@@ -59,7 +59,7 @@ class ApplicationsController extends \app\addons\Controller {
     public function actionEthogramdata() {
 
         $ethogramcontainer = \app\models\EthogramContainer::find()
-                ->where(['user_id' => 11])
+                ->where(['user_id' => Yii::$app->user->identity->user_id])
                 ->orderBy(['sort_order' => SORT_DESC])
                 ->all();
         $ethogramArray = [];
@@ -74,6 +74,7 @@ class ApplicationsController extends \app\addons\Controller {
             $ethogramArray[$c]['name']=$subject->container_name;
             $ethogramArray[$c]['sort_order']=$subject->sort_order;
             $b = 0;
+            $ethogramArray[$c]['values'][$b] = [];
             foreach ($behavioursset as $behaviour) {
                 
                 $ethogramArray[$c]['values'][$b]['name'] = $behaviour->element_name;
@@ -169,13 +170,12 @@ class ApplicationsController extends \app\addons\Controller {
         \Yii::$app->response->format = 'json';
 
         if (Yii::$app->request->isPost) {
-
             if (empty(Yii::$app->request->post('subject')) || is_null(Yii::$app->request->post('subject'))) {
                 $reply = ['transaction' => 'error', 'message' => 'Subject is Empty'];
                 return $reply;
             }
 
-            if (!empty(Yii::$app->request->post('container_id')) || !is_null(Yii::$app->request->post('container_id'))) {
+            if (!empty(Yii::$app->request->post('container_id')) && !is_null(Yii::$app->request->post('container_id'))) {
                 $model = \app\models\EthogramContainer::findOne(['container_id' => Yii::$app->request->post('container_id')]);
             } else {
                 $model = new \app\models\EthogramContainer();
@@ -188,7 +188,7 @@ class ApplicationsController extends \app\addons\Controller {
             $model->user_id = Yii::$app->user->identity->user_id;
 
             $model->save();
-            $reply = ['transaction' => 'success'];
+            return $reply = ['transaction' => 'success', 'data'=>$model];
 
             //Yii::$app->request->post('section');
         }
