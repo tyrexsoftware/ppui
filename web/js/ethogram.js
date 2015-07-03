@@ -92,7 +92,7 @@ jQuery(document).ready(function () {
                 $(buttonsRow).prepend(method.createElement(dragButton))
 //                    .prepend(successButton)
                         .prepend(method.createElement(editButton))
-                        .prepend(method.createElement(deleteButton))
+                        .prepend($(method.createElement(deleteButton).on('click', method.deleteContainer())))
                         .prepend(method.createElement(collapseButton));
 
             }

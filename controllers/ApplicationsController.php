@@ -64,23 +64,22 @@ class ApplicationsController extends \app\addons\Controller {
                 ->all();
         $ethogramArray = [];
         $c = 0;
-        
+
         foreach ($ethogramcontainer as $subject) {
             $behavioursset = \app\models\EthogramElements::find()
                     ->where(['container_id' => $subject->container_id])
                     ->orderBy(['sort_order' => SORT_DESC])
                     ->all();
-            $ethogramArray[$c]['id']=$subject->container_id;
-            $ethogramArray[$c]['name']=$subject->container_name;
-            $ethogramArray[$c]['sort_order']=$subject->sort_order;
+            $ethogramArray[$c]['id'] = $subject->container_id;
+            $ethogramArray[$c]['name'] = $subject->container_name;
+            $ethogramArray[$c]['sort_order'] = $subject->sort_order;
             $b = 0;
             $ethogramArray[$c]['values'][$b] = [];
             foreach ($behavioursset as $behaviour) {
-                
+
                 $ethogramArray[$c]['values'][$b]['name'] = $behaviour->element_name;
                 $ethogramArray[$c]['values'][$b]['id'] = $behaviour->element_id;
                 $b++;
-                
             }
             $c++;
         }
@@ -188,9 +187,27 @@ class ApplicationsController extends \app\addons\Controller {
             $model->user_id = Yii::$app->user->identity->user_id;
 
             $model->save();
-            return $reply = ['transaction' => 'success', 'data'=>$model];
+            return $reply = ['transaction' => 'success', 'data' => $model];
 
             //Yii::$app->request->post('section');
+        }
+    }
+
+    public function deleteEthogramcontainer() {
+        \Yii::$app->response->format = 'json';
+
+        if (Yii::$app->request->isPost) {
+            if (empty(Yii::$app->request->post('id')) || is_null(Yii::$app->request->post('id'))) {
+                return $reply = ['transaction' => 'error', 'message' => 'Id is empty'];
+            }
+
+            $container = \app\models\EthogramContainer::findOne(
+                            [
+                                'container_id' => Yii::$app->request->post('id'),
+                                'user_id' => Yii::$app->user->identity->user_id
+            ]);
+            var_dump($container);  
+            die();
         }
     }
 
@@ -202,7 +219,7 @@ class ApplicationsController extends \app\addons\Controller {
 
 
             if ($model->validate()) {
-                
+
                 $animalscsv = UploadedFile::getInstance($model, 'animalscsv');
 
 
