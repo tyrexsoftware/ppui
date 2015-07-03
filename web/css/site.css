@@ -282,6 +282,10 @@ a.delete, a.edit, a.success.ok, a.success.pendning, a.drag, a.loadingIcon{margin
 a.delete:hover, a.edit:hover, a.success.ok:hover, a.success.pendning:hover, a.drag:hover, a.loadingIcon:hover{text-decoration:none;}
 a.success.ok{color:#8ccd2f;}
 a.success.pendning{color: #23527c;}
-.m_text > a{font-size:18px;}
+.m_text > a{font-size:18px !important;cursor: pointer;}
 a.drag{cursor: pointer;}
 .subjectInput{border:none; padding:0; width:100%}
+.closePopup .ui-dialog-titlebar{background: #92d9e6;}
+.closePopup .ui-dialog-titlebar-close{font-family: 'FontAwesome', sans-serif;font-size: 18px;color:#337ab7;border:none;background:none;margin:-13px 0 0;}
+.closePopup .ui-dialog-titlebar-close:before{content: "\f00d";}
+.closePopup .ui-dialog-buttonset button{background: #51b0ce;color:#fff;border:1px solid #fff;display: inline-block;padding: 5px 10px;}

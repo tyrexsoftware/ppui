@@ -193,21 +193,27 @@ class ApplicationsController extends \app\addons\Controller {
         }
     }
 
-    public function deleteEthogramcontainer() {
+    public function actionDeleteethogramcontainer() {
         \Yii::$app->response->format = 'json';
 
         if (Yii::$app->request->isPost) {
-            if (empty(Yii::$app->request->post('id')) || is_null(Yii::$app->request->post('id'))) {
+            if (empty(Yii::$app->request->post('container_id')) || is_null(Yii::$app->request->post('container_id'))) {
                 return $reply = ['transaction' => 'error', 'message' => 'Id is empty'];
             }
 
             $container = \app\models\EthogramContainer::findOne(
                             [
-                                'container_id' => Yii::$app->request->post('id'),
+                                'container_id' => Yii::$app->request->post('container_id'),
                                 'user_id' => Yii::$app->user->identity->user_id
             ]);
-            var_dump($container);  
-            die();
+            if(!is_null($container)) {
+                
+                if(is_numeric($container->delete())){
+                    return ['transaction' => 'success'];
+                } else {
+                    return ['transaction' => 'error'];
+                }
+            }
         }
     }
 
