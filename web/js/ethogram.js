@@ -22,7 +22,7 @@
     var successPendingButton = {type: '<a/>', values: {class: 'success pendning fa-check'}};
     var LoadingButton = {type: '<a/>', values: {class: 'loadingIcon fa-spinner fa-pulse'}};
 
-
+    var prevPagesOrder = [];
     var ethogram;
 
     var method = {
@@ -33,8 +33,20 @@
             $(".manage_blocks").sortable({
                 items: '.ma_block:not(.inactive)',
                 handle: '.drag',
-                stop: method.saveContainer
+                start: function(event, ui) {
+                    prevPagesOrder = $(this).sortable('toArray');
+                },
+                stop: function(event, ui) {
+                             
+                    var currentOrder = $(this).sortable('toArray');
+                    var first = ui.item[0].id;
+                    var second = currentOrder[prevPagesOrder.indexOf(first)];
+                    method.saveContainer($('#'+first));
+                    method.saveContainer($('#'+second));
+                }
+
             });
+
             $(".manage_blocks").disableSelection();
 
 
@@ -74,20 +86,24 @@
             if (type == 'new') {
 
                 $(buttonsRow)
-                        .prepend(method.createElement(successPendingButton).on('click', method.saveContainer))
+                        .prepend(method.createElement(successPendingButton).on('click', function(event) {
+                            method.saveContainer(method.getContainer(event))
+                        }))
                         .prepend($(method.createElement(deleteButton)
                                 .on('click', function(event) {
-                                    method.askQuestion(method.deleteContainer, event)
+                                    method.askQuestion(method.deleteContainer, method.getContainer(event))
                                 })
                                 ))
 
             } else {
                 $(buttonsRow).prepend(method.createElement(dragButton))
 //                    .prepend(successButton)
-                        .prepend(method.createElement(editButton).on('click', method.editContainer))
+                        .prepend(method.createElement(editButton).on('click', function(event) {
+                            method.editContainer(method.getContainer(event))
+                        }))
                         .prepend($(method.createElement(deleteButton)
                                 .on('click', function(event) {
-                                    method.askQuestion(method.deleteContainer, event)
+                                    method.askQuestion(method.deleteContainer, method.getContainer(event))
                                 })
                                 ))
                         .prepend(method.createElement(collapseButton));
@@ -107,7 +123,7 @@
                                 .prepend(method.createElement(successPendingButton))
                                 .prepend($(method.createElement(deleteButton)
                                         .on('click', function(event) {
-                                            method.askQuestion(method.deleteBehavior, event)
+                                            method.askQuestion(method.deleteBehavior, method.getContainer(event))
                                         })
                                         ));
 
@@ -119,7 +135,9 @@
                 items: 'div:not(.m_action)'}).prependTo(containerelement));
 
 
-            var title = method.createTitle($(method.createElement(subjectInput).on('focusin', method.editContainer))
+            var title = method.createTitle($(method.createElement(subjectInput).on('focusin', function(event) {
+                method.editContainer(method.getContainer(event))
+            }))
                     .val(containervalues.name)
                     .attr('placeholder', containervalues.name)).append(buttonsRow);
 
@@ -160,14 +178,15 @@
                     .prepend($('<div/>', {class: 'm_title'})
                             .prepend(inputField))
         },
-        editContainer: function(event) {
+        editContainer: function(container) {
 
-            var container = method.getContainer(event);
             $('.m_title_edit', container).empty()
-                    .prepend(method.createElement(successPendingButton).on('click', method.saveContainer))
+                    .prepend(method.createElement(successPendingButton).on('click', function(event) {
+                        method.saveContainer(method.getContainer(event))
+                    }))
                     .prepend($(method.createElement(deleteButton)
                             .on('click', function(event) {
-                                method.askQuestion(method.deleteContainer, event)
+                                method.askQuestion(method.deleteContainer, method.getContainer(event))
                             })
                             ));
 
@@ -175,9 +194,7 @@
 
 
         },
-        saveContainer: function(event) {
-
-            var container = method.getContainer(event);
+        saveContainer: function(container) {
 
             var id = '';
             if (typeof $(container).attr('id') !== "undefined") {
@@ -196,7 +213,9 @@
 
                         $('.m_title_edit', container)
                                 .prepend(method.createElement(dragButton))
-                                .prepend(method.createElement(editButton).on('click', method.editContainer))
+                                .prepend(method.createElement(editButton).on('click', function(event) {
+                                    method.editContainer(method.getContainer(event))
+                                }))
                                 .prepend(method.createElement(deleteButton)
                                         .on('click', function(event) {
                                             method.askQuestion(method.deleteContainer, event)
@@ -238,9 +257,7 @@
                         }
                     });
         },
-        deleteContainer: function(event) {
-
-            var container = method.getContainer(event);
+        deleteContainer: function(container) {
             if (typeof $(container).attr('id') !== 'undefined')
             {
                 var container_id = $(container).attr('id');
@@ -259,6 +276,7 @@
             }
         },
         getContainer: function(event) {
+
             var container = $(event.target).closest('.' + containerclass);
 
             return container;

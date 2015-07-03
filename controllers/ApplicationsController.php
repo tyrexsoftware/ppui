@@ -60,7 +60,7 @@ class ApplicationsController extends \app\addons\Controller {
 
         $ethogramcontainer = \app\models\EthogramContainer::find()
                 ->where(['user_id' => Yii::$app->user->identity->user_id])
-                ->orderBy(['sort_order' => SORT_DESC])
+                ->orderBy(['sort_order' => SORT_ASC])
                 ->all();
         $ethogramArray = [];
         $c = 0;
