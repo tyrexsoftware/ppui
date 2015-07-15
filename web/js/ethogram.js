@@ -268,13 +268,39 @@
             $(behaviorsBox)
                     .append(method.createElement(deleteButton)
                             .on('click', function (event) {
-                                            method.askQuestion(method.deleteContainer, event)
-                                        }))
-                    .append(method.createElement(successPendingButton));
+                                method.askQuestion(method.deleteContainer, event)
+                            }))
+                    .append(method.createElement(successPendingButton).on('click', function (event) {
+                        method.saveBehavior(method.getBehaviorsBox(event))
+                    }));
 
 
             $('.newInput', behaviorsBox).off('focusin').focus();
 
+
+        },
+        saveBehavior: function (behaviorsBox) {
+
+            var id = '';
+            if (typeof $(behaviorsBox).attr('id') !== "undefined") {
+                id = $(behaviorsBox).attr('id');
+            }
+            var container_id = $(behaviorsBox).closest('.' + containerclass).attr('id');
+
+            var value = $('.newInput', behaviorsBox).val();
+            $.ajax({method: 'POST', url: 'ethogrambehavior', data: {element_name: value, position: $(behaviorsBox).index(), element_id: id, container_id: container_id}})
+                    .done(function (msg) {
+                        $('.newInput', behaviorsBox).blur();
+                        $('.newInput', behaviorsBox).nextAll().remove();
+                        $(behaviorsBox)
+                                .apppend(method.createElement(editButton).on('click',
+                                function (event) {
+                                    method.editBehavior(behaviorsBox)
+                                }
+                        ))
+                        .apppend(method.createElement(dragButton));
+
+                    });
 
         },
         askQuestion: function (eventFunc, event) {
