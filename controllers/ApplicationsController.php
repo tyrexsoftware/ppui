@@ -217,6 +217,29 @@ class ApplicationsController extends \app\addons\Controller {
         }
     }
 
+    public function actionDeleteethogrambehavior() {
+        \Yii::$app->response->format = 'json';
+
+        if (Yii::$app->request->isPost) {
+            if (empty(Yii::$app->request->post('element_id')) || is_null(Yii::$app->request->post('element_id'))) {
+                return $reply = ['transaction' => 'error', 'message' => 'Id is empty'];
+            }
+
+            $container = \app\models\EthogramElements::findOne(
+                            [
+                                'element_id' => Yii::$app->request->post('element_id'),
+            ]);
+            if (!is_null($container)) {
+
+                if (is_numeric($container->delete())) {
+                    return ['transaction' => 'success'];
+                } else {
+                    return ['transaction' => 'error'];
+                }
+            }
+        }
+    }
+
     public function actionEthogrambehavior() {
 
         \Yii::$app->response->format = 'json';
@@ -226,7 +249,7 @@ class ApplicationsController extends \app\addons\Controller {
                 $reply = ['transaction' => 'error', 'message' => 'Behavior name is Empty'];
                 return $reply;
             }
-            
+
             if (!empty(Yii::$app->request->post('element_id')) && !is_null(Yii::$app->request->post('element_id'))) {
                 $model = \app\models\EthogramElements::findOne(['element_id' => Yii::$app->request->post('element_id')]);
             } else {
@@ -237,6 +260,7 @@ class ApplicationsController extends \app\addons\Controller {
             $model->element_name = Yii::$app->request->post('element_name');
             $model->container_id = Yii::$app->request->post('container_id');
             $model->sort_order = Yii::$app->request->post('position');
+            $model->recepient = 0;
             $model->element_key = \app\addons\helpers\GeneralHelper::cleansting(Yii::$app->request->post('element_name'));
 
             $model->save();

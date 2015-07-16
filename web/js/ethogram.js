@@ -5,7 +5,7 @@
  */;
 
 
-(function ($) {
+(function($) {
     var buttonClass = 'm_action';
     var containerclass = 'ma_block';
     var boxclass = 'm_slide';
@@ -24,20 +24,24 @@
     var LoadingButton = {type: '<a/>', values: {class: 'loadingIcon fa-spinner fa-pulse'}};
 
     var prevPagesOrder = [];
+    
+    var prevContainer = '';
+    var prevItemsOrder = '';
+    
     var ethogram;
 
     var method = {
-        initialize: function (params) {
+        initialize: function(params) {
 
             self.ethogram = $(this);
 
             $(".manage_blocks").sortable({
                 items: '.ma_block:not(.inactive)',
                 handle: '.drag',
-                start: function (event, ui) {
+                start: function(event, ui) {
                     prevPagesOrder = $(this).sortable('toArray');
                 },
-                stop: function (event, ui) {
+                stop: function(event, ui) {
 
                     var currentOrder = $(this).sortable('toArray');
                     var first = ui.item[0].id;
@@ -56,16 +60,9 @@
 
             var inactive = $('<div/>', {class: buttonClass + ' inactive'})
                     .text('Add new section')
-                    .on('click', function () {
-                        method.addContainer('new', {name: '', values: {}})
+                    .on('click', function() {
+                        method.addContainer('new', {name: '', values: {}});
                         $('.subjectInput').last().focus();
-//                        $('.success.pendning').last().on('click', function(event)
-//                        {
-//                            var element = $(event.target).parent().parent().parent();
-//                            var value = $('.subjectInput', element).val();
-//
-//                            method.saveContainer(element, value);
-//                        }
                     });
 
             $(self.ethogram).prepend(inactive);
@@ -75,39 +72,35 @@
 
             return this;
         },
-        buildEhtogram: function (data) {
-
-
+        buildEhtogram: function(data) {
 
             $.each(data, method.addContainer);
             return this;
-
-
         },
-        addContainer: function (type, containervalues) {
+        addContainer: function(type, containervalues) {
 
-            var buttonsRow = $('<div/>', {class: 'm_title_edit'})
+            var buttonsRow = $('<div/>', {class: 'm_title_edit'});
             if (type == 'new') {
 
                 $(buttonsRow)
-                        .prepend(method.createElement(successPendingButton).on('click', function (event) {
-                            method.saveContainer(method.getContainer(event))
+                        .prepend(method.createElement(successPendingButton).on('click', function(event) {
+                            method.saveContainer(method.getContainer(event));
                         }))
                         .prepend($(method.createElement(deleteButton)
-                                .on('click', function (event) {
-                                    method.askQuestion(method.deleteContainer, method.getContainer(event))
+                                .on('click', function(event) {
+                                    method.askQuestion(method.deleteContainer, method.getContainer(event));
                                 })
-                                ))
+                                ));
 
             } else {
                 $(buttonsRow).prepend(method.createElement(dragButton))
 //                    .prepend(successButton)
-                        .prepend(method.createElement(editButton).on('click', function (event) {
-                            method.editContainer(method.getContainer(event))
+                        .prepend(method.createElement(editButton).on('click', function(event) {
+                            method.editContainer(method.getContainer(event));
                         }))
                         .prepend($(method.createElement(deleteButton)
-                                .on('click', function (event) {
-                                    method.askQuestion(method.deleteContainer, method.getContainer(event))
+                                .on('click', function(event) {
+                                    method.askQuestion(method.deleteContainer, method.getContainer(event));
                                 })
                                 ))
                         .prepend(method.createElement(collapseButton));
@@ -118,12 +111,12 @@
                     .insertBefore($('.inactive'));
 
             var title = method.createTitle($(method.createElement(subjectInput)
-                    .on('focusin', function (event) {
-                        method.editContainer(method.getContainer(event))
+                    .on('focusin', function(event) {
+                        method.editContainer(method.getContainer(event));
                     }))
-                    .on('keypress', function (event) {
+                    .on('keypress', function(event) {
                         if (event.which == 13) {
-                            method.saveContainer(method.getContainer(event))
+                            method.saveContainer(method.getContainer(event));
                         }
                     })
                     .val(containervalues.name)
@@ -134,7 +127,17 @@
             var buttonsContainer = $('<div/>', {class: boxclass}).sortable({
                 connectWith: "." + boxclass,
                 items: 'div:not(.m_action)',
-                handle: '.drag'
+                handle: '.drag',
+                start: function(event, ui) {
+                    
+                    $(this).css('left', '500px');
+                    prevContainer = $(ui.item).closest('.' + containerclass);
+                    prevItemsOrder = $(this).sortable('toArray');
+                },
+                beforeStop: function (event, ui) {
+                    console.log(ui);
+                }
+                
             });
 
 
@@ -143,23 +146,24 @@
 
             var newActionButton = $('<div/>', {class: buttonClass})
                     .text('New Behavior')
-                    .on('click', function () {
+                    .on('click', function() {
                         $('<div/>', {class: textwrapperclass}).insertBefore($(this))
-                                .prepend($('<input>', {type: 'text', class: 'newInput'}))
-                                .prepend(method.createElement(successPendingButton))
-                                .prepend($(method.createElement(deleteButton)
-                                        .on('click', function (event) {
-                                            method.askQuestion(method.deleteBehavior, method.getContainer(event))
+                                .append($('<input>', {type: 'text', class: 'newInput'}))
+                                .append($(method.createElement(deleteButton)
+                                        .on('click', function(event) {
+                                            method.askQuestion(method.deleteBehavior, method.getBehaviorsBox(event));
                                         })
-                                        ));
-
+                                        ))
+                                .append(method.createElement(successPendingButton).on('click', function(event) {
+                                    method.saveBehavior(method.getBehaviorsBox(event));
+                                }));
                     });
 
             if ($(containervalues.values).size() > 1) {
-                $.each(containervalues.values, function (i, value) {
+                $.each(containervalues.values, function(i, value) {
 
                     $(buttonsContainer).prepend(method.addBehavior(value));
-                })
+                });
             }
             $(buttonsContainer).append(newActionButton);
             $(containerelement).append(buttonsContainer);
@@ -168,10 +172,10 @@
             return this;
 
         },
-        createElement: function (elementObject) {
+        createElement: function(elementObject) {
             return $(elementObject.type, elementObject.values);
         },
-        addBehavior: function (behavorvalues) {
+        addBehavior: function(behavorvalues) {
 
             if (typeof behavorvalues.name === 'undefined') {
                 var name = '';
@@ -182,10 +186,13 @@
                 var name = behavorvalues.name;
                 var id = behavorvalues.id;
 
-                var buttonsRow = $(method.createElement(deleteButton))
+                var buttonsRow = $(method.createElement(deleteButton)
+                        .on('click', function(event) {
+                            method.askQuestion(method.deleteBehavior, method.getBehaviorsBox(event));
+                        }))
                         .add(method.createElement(editButton).on('click',
-                                function (event) {
-                                    method.editBehavior(method.getBehaviorsBox(event))
+                                function(event) {
+                                    method.editBehavior(method.getBehaviorsBox(event));
                                 }
                         ))
                         .add(method.createElement(dragButton));
@@ -199,22 +206,21 @@
 
             return behavior;
         },
-        createTitle: function (inputField) {
+        createTitle: function(inputField) {
 
             return $('<div/>', {class: 'm_title_wrapper'})
                     .prepend($('<div/>', {class: 'm_title'})
-                            .prepend(inputField))
+                            .prepend(inputField));
         },
-        editContainer: function (container) {
+        editContainer: function(container) {
 
-            console.log(container);
             $('.m_title_edit', container).empty()
-                    .prepend(method.createElement(successPendingButton).on('click', function (event) {
-                        method.saveContainer(method.getContainer(event))
+                    .prepend(method.createElement(successPendingButton).on('click', function(event) {
+                        method.saveContainer(method.getContainer(event));
                     }))
                     .prepend($(method.createElement(deleteButton)
-                            .on('click', function (event) {
-                                method.askQuestion(method.deleteContainer, method.getContainer(event))
+                            .on('click', function(event) {
+                                method.askQuestion(method.deleteContainer, method.getContainer(event));
                             })
                             ));
 
@@ -222,7 +228,7 @@
 
 
         },
-        saveContainer: function (container) {
+        saveContainer: function(container) {
 
             var id = '';
             if (typeof $(container).attr('id') !== "undefined") {
@@ -235,51 +241,54 @@
 
 
             $.ajax({method: "POST", url: 'ethogramcontainer', data: {subject: value, position: $(container).index(), container_id: id}})
-                    .done(function (msg) {
+                    .done(function(msg) {
                         $(container).attr('id', msg.data.container_id);
                         $('.subjectInput', container).blur();
 
-                        $('.m_title_edit', container)
-                                .prepend(method.createElement(dragButton))
-                                .prepend(method.createElement(editButton).on('click', function (event) {
-                                    method.editContainer(method.getContainer(event))
-                                }))
-                                .prepend(method.createElement(deleteButton)
-                                        .on('click', function (event) {
-                                            method.askQuestion(method.deleteContainer, event)
-                                        }))
-
-                                .prepend(method.createElement(collapseButton));
-                        $('.subjectInput', container).on('focusin', function (event) {
-                            method.editContainer(method.getContainer(event))
-                        });
-
                         $('.loadingIcon', container)
-                                .fadeOut('slow', function () {
+                                .fadeOut('slow', function() {
                                     $(this).before(method.createElement(successOkButton));
-                                    $('.success.ok').fadeOut(1500);
+                                    $('.success.ok', container).fadeOut(1500,
+                                            function() {
+
+                                                $('.m_title_edit', container)
+                                                        .prepend(method.createElement(dragButton))
+                                                        .prepend(method.createElement(editButton).on('click', function(event) {
+                                                            method.editContainer(method.getContainer(event));
+                                                        }))
+                                                        .prepend(method.createElement(deleteButton)
+                                                                .on('click', function(event) {
+                                                                    method.askQuestion(method.deleteContainer, method.getContainer(event));
+                                                                }))
+
+                                                        .prepend(method.createElement(collapseButton));
+                                                $('.subjectInput', container).on('focusin', function(event) {
+                                                    method.editContainer(method.getContainer(event));
+                                                });
+                                            }
+                                    );
                                 });
                     });
 
         },
-        editBehavior: function (behaviorsBox) {
+        editBehavior: function(behaviorsBox) {
 
             $('.newInput', behaviorsBox).nextAll().remove();
             $(behaviorsBox)
                     .append(method.createElement(deleteButton)
-                            .on('click', function (event) {
-                                method.askQuestion(method.deleteContainer, event)
+                            .on('click', function(event) {
+                                method.askQuestion(method.deleteBehavior, method.getBehaviorsBox(event));
                             }))
-                    .append(method.createElement(successPendingButton).on('click', function (event) {
-                        method.saveBehavior(method.getBehaviorsBox(event))
+                    .append(method.createElement(successPendingButton).on('click', function(event) {
+
+                        method.saveBehavior(method.getBehaviorsBox(event));
+                        $('.newInput', behaviorsBox).blur();
                     }));
-
-
             $('.newInput', behaviorsBox).off('focusin').focus();
 
 
         },
-        saveBehavior: function (behaviorsBox) {
+        saveBehavior: function(behaviorsBox) {
 
             var id = '';
             if (typeof $(behaviorsBox).attr('id') !== "undefined") {
@@ -288,26 +297,40 @@
             var container_id = $(behaviorsBox).closest('.' + containerclass).attr('id');
 
             var value = $('.newInput', behaviorsBox).val();
+
+            $('.newInput', behaviorsBox).nextAll().remove();
+            $(behaviorsBox).append(method.createElement(LoadingButton));
+
             $.ajax({method: 'POST', url: 'ethogrambehavior', data: {element_name: value, position: $(behaviorsBox).index(), element_id: id, container_id: container_id}})
-                    .done(function (msg) {
-                        $('.newInput', behaviorsBox).blur();
-                        $('.newInput', behaviorsBox).nextAll().remove();
-                        $(behaviorsBox)
-                                .apppend(method.createElement(editButton).on('click',
-                                function (event) {
-                                    method.editBehavior(behaviorsBox)
-                                }
-                        ))
-                        .apppend(method.createElement(dragButton));
+                    .done(function(msg) {
+                        $(behaviorsBox).attr('id', msg.data.element_id);
+                        $('.loadingIcon', behaviorsBox)
+                                .fadeOut('slow', function() {
+                                    $(this).before(method.createElement(successOkButton));
+                                    $('.success.ok', behaviorsBox).fadeOut(1500, function() {
+                                        $(behaviorsBox)
+                                                .append(method.createElement(deleteButton)
+                                                        .on('click', function(event) {
+                                                            method.askQuestion(method.deleteBehavior, method.getBehaviorsBox(event));
+                                                        }))
+                                                .append(method.createElement(editButton))
 
+                                                .append(method.createElement(dragButton));
+                                    });
+
+                                });
+                        console.log(behaviorsBox);
                     });
-
         },
-        askQuestion: function (eventFunc, event) {
-            console.log(event);
+        askQuestion: function(eventFunc, element) {
+
+            var MessageText = 'Are you sure you want to delete behavior?';
+            if ($(element).hasClass('ma_block')) {
+                MessageText = 'Are you sure you want to delete container?';
+            }
 
             $('<div></div>', {class: 'closePopup'}).appendTo('body')
-                    .html('<div><h6>Are you sure you want to delete container?</h6></div>')
+                    .html('<div><h6>' + MessageText + '</h6></div>')
                     .dialog({
                         modal: true,
                         dialogClass: 'closePopup',
@@ -317,50 +340,69 @@
                         width: 'auto',
                         resizable: false,
                         buttons: {
-                            Yes: function () {
-                                eventFunc(event);
+                            Yes: function() {
+                                eventFunc(element);
                                 $(this).dialog("close");
                             },
-                            No: function () {
+                            No: function() {
                                 $(this).dialog("close");
                             }
                         },
-                        close: function (event, ui) {
+                        close: function(event, ui) {
                             $(this).remove();
                         }
                     });
         },
-        deleteContainer: function (container) {
+        deleteContainer: function(container) {
             if (typeof $(container).attr('id') !== 'undefined')
             {
                 var container_id = $(container).attr('id');
                 $.ajax({url: 'deleteethogramcontainer', method: 'POST', data: {container_id: container_id}})
-                        .done(function (msg) {
+                        .done(function(msg) {
                             if (msg.transaction === 'success') {
-                                $(container).fadeOut(1000, function () {
-                                    $(this.remove())
+                                $(container).fadeOut(1000, function() {
+                                    $(this.remove());
                                 });
                             }
                         });
             } else {
-                $(container).fadeOut(1000, function () {
-                    $(this.remove())
-                })
+                $(container).fadeOut(1000, function() {
+                    $(this.remove());
+                });
             }
         },
-        getContainer: function (event) {
+        deleteBehavior: function(behaviorsBox) {
+
+            if (typeof $(behaviorsBox).attr('id') !== 'undefined')
+            {
+                var element_id = $(behaviorsBox).attr('id');
+                $.ajax({url: 'deleteethogrambehavior', method: 'POST', data: {element_id: element_id}})
+                        .done(function(msg) {
+                            if (msg.transaction === 'success') {
+                                $(behaviorsBox).fadeOut(1000, function() {
+                                    $(this.remove());
+                                });
+                            }
+                        });
+            } else {
+                $(behaviorsBox).fadeOut(1000, function() {
+                    $(this.remove());
+                });
+            }
+        },
+        getContainer: function(event) {
 
             var container = $(event.target).closest('.' + containerclass);
 
             return container;
         },
-        getBehaviorsBox: function (event) {
+        getBehaviorsBox: function(event) {
             return $(event.target).parent();
         }
 
     };
 
-    $.fn.ethogram = function (call) {
+    $.fn.ethogram = function(call) {
         if (method[call]) {
             return method[call].apply(this, Array.prototype.slice.call(arguments, 1));
         } else if (typeof call === 'object' || !call) {
@@ -369,16 +411,16 @@
             $.error('Method ' + call + ' not found in jQuery.test');
         }
     };
-    $.fn.enterKey = function (fnc) {
-        return this.each(function () {
-            $(this).keypress(function (ev) {
+    $.fn.enterKey = function(fnc) {
+        return this.each(function() {
+            $(this).keypress(function(ev) {
                 var keycode = (ev.keyCode ? ev.keyCode : ev.which);
                 if (keycode == '13') {
                     fnc.call(this, ev);
                 }
-            })
-        })
-    }
+            });
+        });
+    };
 })(jQuery);
 
 
