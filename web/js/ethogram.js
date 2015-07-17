@@ -18,6 +18,7 @@
     var collapseButton = {type: '<a/>', values: {class: 'collapseL'}};
     var deleteButton = {type: '<a/>', values: {class: 'delete fa-trash-o'}};
     var editButton = {type: '<a/>', values: {class: 'edit fa-edit'}};
+    var link = {type: '<a/>', values: {class: 'link fa-link'}};
     var dragButton = {type: '<a/>', values: {class: 'drag fa-arrows'}};
     var successOkButton = {type: '<a/>', values: {class: 'success ok fa-check'}};
     var successPendingButton = {type: '<a/>', values: {class: 'success pendning fa-check'}};
@@ -137,18 +138,13 @@
                 beforeStop: function(event, ui) {
                     console.log(ui);
                 }
-
             });
-
-
-
             //add button and make tiles sortable;
 
             var newActionButton = $('<div/>', {class: buttonClass})
                     .text('New Behavior')
                     .on('click', function(event) {
                         method.addBehavior().insertBefore($(this));
-
                     });
 
             if ($(containervalues.values).size() > 1) {
@@ -169,10 +165,12 @@
         },
         addBehavior: function(behavorvalues) {
 
+
             if (typeof behavorvalues === 'undefined') {
 
                 var name = '';
                 var id = '';
+
                 var buttonsRow =
                         method.createElement(deleteButton)
                         .on('click', function(event) {
@@ -186,9 +184,13 @@
 
 
             } else {
+                var linkedclass = '';
+
                 var name = behavorvalues.name;
                 var id = behavorvalues.id;
-
+                if (behavorvalues.recepient == 1) {
+                    linkedclass = 'ok';
+                }
                 var buttonsRow = $(method.createElement(deleteButton)
                         .on('click', function(event) {
                             method.askQuestion(method.deleteBehavior, method.getBehaviorsBox(event));
@@ -198,6 +200,9 @@
                                     method.editBehavior(method.getBehaviorsBox(event));
                                 }
                         ))
+                        .add(method.createElement(link).addClass(linkedclass).on('click', function(event) {
+                            method.saveBehavior(method.getBehaviorsBox(event), 1);
+                        }))
                         .add(method.createElement(dragButton));
             }
 
@@ -211,8 +216,6 @@
                                 }
                             })
                             .attr('placeholder', name)).append(buttonsRow);
-
-
             return behavior;
         },
         createTitle: function(inputField) {
@@ -296,12 +299,16 @@
 
 
         },
-        saveBehavior: function(behaviorsBox) {
+        saveBehavior: function(behaviorsBox, linked) {
 
             var id = '';
             if (typeof $(behaviorsBox).attr('id') !== "undefined") {
                 id = $(behaviorsBox).attr('id');
             }
+            if (typeof linked === "undefined") {
+                linked = 0;
+            }
+
             var container_id = $(behaviorsBox).closest('.' + containerclass).attr('id');
 
             var value = $('.newInput', behaviorsBox).val();
@@ -310,9 +317,13 @@
             $(behaviorsBox).append(method.createElement(LoadingButton));
             $('.newInput', behaviorsBox).blur();
 
-            $.ajax({method: 'POST', url: 'ethogrambehavior', data: {element_name: value, position: $(behaviorsBox).index(), element_id: id, container_id: container_id}})
+            $.ajax({method: 'POST', url: 'ethogrambehavior', data: {element_name: value, position: $(behaviorsBox).index(), element_id: id, container_id: container_id, recepient: linked}})
                     .done(function(msg) {
                         $(behaviorsBox).attr('id', msg.data.element_id);
+                        var linkedclass = '';
+                        if(msg.data.recepient==1) {
+                            linkedclass = 'ok';
+                        }
                         $('.loadingIcon', behaviorsBox)
                                 .fadeOut('slow', function() {
                                     $(this).before(method.createElement(successOkButton));
@@ -327,12 +338,13 @@
                                                             method.editBehavior(method.getBehaviorsBox(event));
                                                         }
                                                 ))
-
+                                                .append(method.createElement(link).addClass(linkedclass).on('click', function(event) {
+                                                    method.saveBehavior(method.getBehaviorsBox(event), 1);
+                                                }))
                                                 .append(method.createElement(dragButton));
                                     });
 
                                 });
-                        console.log(behaviorsBox);
                     });
         },
         askQuestion: function(eventFunc, element) {

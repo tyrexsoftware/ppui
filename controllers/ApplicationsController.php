@@ -79,6 +79,7 @@ class ApplicationsController extends \app\addons\Controller {
 
                 $ethogramArray[$c]['values'][$b]['name'] = $behaviour->element_name;
                 $ethogramArray[$c]['values'][$b]['id'] = $behaviour->element_id;
+                $ethogramArray[$c]['values'][$b]['recepient'] = $behaviour->recepient;
                 $b++;
             }
             $c++;
@@ -260,7 +261,7 @@ class ApplicationsController extends \app\addons\Controller {
             $model->element_name = Yii::$app->request->post('element_name');
             $model->container_id = Yii::$app->request->post('container_id');
             $model->sort_order = Yii::$app->request->post('position');
-            $model->recepient = 0;
+            $model->recepient = Yii::$app->request->post('recepient');
             $model->element_key = \app\addons\helpers\GeneralHelper::cleansting(Yii::$app->request->post('element_name'));
 
             $model->save();
