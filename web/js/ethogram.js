@@ -24,10 +24,10 @@
     var LoadingButton = {type: '<a/>', values: {class: 'loadingIcon fa-spinner fa-pulse'}};
 
     var prevPagesOrder = [];
-    
+
     var prevContainer = '';
     var prevItemsOrder = '';
-    
+
     var ethogram;
 
     var method = {
@@ -129,15 +129,15 @@
                 items: 'div:not(.m_action)',
                 handle: '.drag',
                 start: function(event, ui) {
-                    
+
                     $(this).css('left', '500px');
                     prevContainer = $(ui.item).closest('.' + containerclass);
                     prevItemsOrder = $(this).sortable('toArray');
                 },
-                beforeStop: function (event, ui) {
+                beforeStop: function(event, ui) {
                     console.log(ui);
                 }
-                
+
             });
 
 
@@ -313,7 +313,11 @@
                                                         .on('click', function(event) {
                                                             method.askQuestion(method.deleteBehavior, method.getBehaviorsBox(event));
                                                         }))
-                                                .append(method.createElement(editButton))
+                                                .append(method.createElement(editButton).on('click',
+                                                        function(event) {
+                                                            method.editBehavior(method.getBehaviorsBox(event));
+                                                        }
+                                                ))
 
                                                 .append(method.createElement(dragButton));
                                     });
