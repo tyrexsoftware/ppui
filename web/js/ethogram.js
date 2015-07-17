@@ -146,17 +146,9 @@
 
             var newActionButton = $('<div/>', {class: buttonClass})
                     .text('New Behavior')
-                    .on('click', function() {
-                        $('<div/>', {class: textwrapperclass}).insertBefore($(this))
-                                .append($('<input>', {type: 'text', class: 'newInput'}))
-                                .append($(method.createElement(deleteButton)
-                                        .on('click', function(event) {
-                                            method.askQuestion(method.deleteBehavior, method.getBehaviorsBox(event));
-                                        })
-                                        ))
-                                .append(method.createElement(successPendingButton).on('click', function(event) {
-                                    method.saveBehavior(method.getBehaviorsBox(event));
-                                }));
+                    .on('click', function(event) {
+                        method.addBehavior().insertBefore($(this));
+
                     });
 
             if ($(containervalues.values).size() > 1) {
@@ -177,11 +169,22 @@
         },
         addBehavior: function(behavorvalues) {
 
-            if (typeof behavorvalues.name === 'undefined') {
+            if (typeof behavorvalues === 'undefined') {
+
                 var name = '';
                 var id = '';
-                var buttonsRow = $(method.createElement(successPendingButton))
-                        .after(method.createElement(deleteButton));
+                var buttonsRow =
+                        method.createElement(deleteButton)
+                        .on('click', function(event) {
+                            method.askQuestion(method.deleteBehavior, method.getBehaviorsBox(event));
+                        })
+                        .add($(method.createElement(successPendingButton)
+                                .on('click', function(event) {
+                                    method.saveBehavior(method.getBehaviorsBox(event));
+                                })));
+
+
+
             } else {
                 var name = behavorvalues.name;
                 var id = behavorvalues.id;
@@ -198,9 +201,15 @@
                         .add(method.createElement(dragButton));
             }
 
+
             var behavior = $('<div/>', {class: textwrapperclass, id: id})
                     .prepend(method.createElement(behaviorInput)
                             .val(name)
+                            .on('keypress', function(event) {
+                                if (event.which == 13) {
+                                    method.saveBehavior(method.getBehaviorsBox(event));
+                                }
+                            })
                             .attr('placeholder', name)).append(buttonsRow);
 
 
@@ -282,7 +291,6 @@
                     .append(method.createElement(successPendingButton).on('click', function(event) {
 
                         method.saveBehavior(method.getBehaviorsBox(event));
-                        $('.newInput', behaviorsBox).blur();
                     }));
             $('.newInput', behaviorsBox).off('focusin').focus();
 
@@ -300,6 +308,7 @@
 
             $('.newInput', behaviorsBox).nextAll().remove();
             $(behaviorsBox).append(method.createElement(LoadingButton));
+            $('.newInput', behaviorsBox).blur();
 
             $.ajax({method: 'POST', url: 'ethogrambehavior', data: {element_name: value, position: $(behaviorsBox).index(), element_id: id, container_id: container_id}})
                     .done(function(msg) {
@@ -414,16 +423,6 @@
         } else {
             $.error('Method ' + call + ' not found in jQuery.test');
         }
-    };
-    $.fn.enterKey = function(fnc) {
-        return this.each(function() {
-            $(this).keypress(function(ev) {
-                var keycode = (ev.keyCode ? ev.keyCode : ev.which);
-                if (keycode == '13') {
-                    fnc.call(this, ev);
-                }
-            });
-        });
     };
 })(jQuery);
 
