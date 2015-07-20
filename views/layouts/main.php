@@ -50,8 +50,8 @@ AppAsset::register($this);
             ]);
             $navigation_items = array();
             $navigation_items[] = ['label' => 'Home', 'url' => ['/site/index']];
-            $navigation_items[] = ['label' => 'About', 'url' => ['/site/about']];
-            $navigation_items[] = ['label' => 'Contact', 'url' => ['/site/contact']];
+            $navigation_items[] = ['label' => 'About', 'url' => 'http://www.primateprofiler.com/about-us/'];
+            $navigation_items[] = ['label' => 'Contact', 'url' => 'http://www.primateprofiler.com/contact-us/'];
 
             if (!Yii::$app->user->isGuest) {
                 if (Yii::$app->user->identity->is_manager == 1) {

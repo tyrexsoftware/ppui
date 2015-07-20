@@ -3,7 +3,7 @@
 
 use app\addons\helpers\HomePage;
 
-$this->title = 'My Yii Application';
+$this->title = 'Primate Profiler Dashboard';
 
 $this->registerJs('', \yii\web\View::POS_READY);
 $homepageinfo = new HomePage();
