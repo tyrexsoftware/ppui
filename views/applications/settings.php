@@ -27,9 +27,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?php
 
-echo '<pre>';
-print_r($model->getErrors());
-echo '</pre>';
 for ($i = 0; $i <= 3; $i++) : ?>
         <div class = "settingsline">
         <?= $form->field($model, 'alopecia_status_'.$i)->checkbox() ?>
