@@ -20,7 +20,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <h3>Focal Behavior Observation Settings</h3>
 
 <?= $form->field($model, 'behavorial_observation_time') ?>
-    <?= $form->field($model, 'xml_behavors')->fileInput() ?>
     <hr>
     <h3>Hair Loss Assessment Settings</h3>
 
