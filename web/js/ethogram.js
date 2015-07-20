@@ -295,7 +295,7 @@
 
                         method.saveBehavior(method.getBehaviorsBox(event));
                     }));
-            $('.newInput', behaviorsBox).off('focusin').focus();
+           $('.newInput', behaviorsBox).off('focusin').focus();
 
 
         },

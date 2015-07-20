@@ -35,6 +35,7 @@ $homepageinfo = new HomePage();
     <ul class="extra_block">
       <li><span class="label_title">IOS:</span>v. <?=$homepageinfo->latestandroidversion?></li>
       <li><span class="label_title">Android:</span>v. <?=$homepageinfo->latestiosversion?></li>
+      
     </ul>
   </div>
 </div>
@@ -60,6 +61,19 @@ $homepageinfo = new HomePage();
   </div>
 </div>
 </div>
+
+      <?php 
+      echo '<pre>';
+     // print_r();
+     foreach ($homepageinfo->getAppUsage() as $a){
+         echo '<pre>';
+         print_r($a);
+         echo '</pre>';
+     }
+     
+      echo '</pre>';
+      ?>
+
 <script type="text/javascript">
       google.setOnLoadCallback(drawChart);
       function drawChart() {

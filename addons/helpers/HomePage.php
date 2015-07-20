@@ -13,9 +13,10 @@ class HomePage extends Object {
     public function getTotalAnimals() {
         return Animals::find()->andFilterWhere(['=', 'organization_id', Yii::$app->user->identity->organization_id])->count();
     }
+
     public function getTotalUserAnimals() {
         return Animals::find()->andFilterWhere(['=', 'organization_id', Yii::$app->user->identity->organization_id])->
-                andFilterWhere(['=','user_id', Yii::$app->user->identity->user_id])->count();
+                        andFilterWhere(['=', 'user_id', Yii::$app->user->identity->user_id])->count();
     }
 
     public function getTotalDevices() {
@@ -28,6 +29,16 @@ class HomePage extends Object {
 
     public function getExiperyDate() {
         return 'TBD';
+    }
+
+    public function getAppUsage() {
+        $totalTests = \app\models\Observations::find()
+                ->select(['MONTH(FROM_UNIXTIME(observation_date)) as mth', 'YEAR(FROM_UNIXTIME(observation_date)) as yr', 'appkey', 'COUNT(*) as ttl'])
+                ->andWhere('YEAR(FROM_UNIXTIME(observation_date)) = 2015')
+                ->andWhere('observer_id = '.Yii::$app->user->identity->user_id)
+                ->groupBy(['mth', 'yr', 'appkey'])
+                ->all();
+        return $totalTests;
     }
 
     public function getLastSyncDay() {

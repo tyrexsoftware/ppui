@@ -26,6 +26,9 @@ use Yii;
  */
 class Observations extends \yii\db\ActiveRecord {
 
+    public $mth;
+    public $yr;
+    public $ttl;
     /**
      * @inheritdoc
      */
