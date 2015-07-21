@@ -96,7 +96,7 @@ if (sizeof($graphData) > 0) {
         }
     }
 } else {
-    echo '[]';
+    echo '[new Date('.date('Y').', '.date('n').', '.date('j').')]';
 }
 ?>
         ]);
