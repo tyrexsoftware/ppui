@@ -81,19 +81,23 @@ foreach ($homepageinfo->getAppUsage() as $observations) {
 
 $minValue = 0;
 $maxValue = 0;
+if (sizeof($graphData) > 0) {
 
-foreach ($graphData as $year=>$months){
-    foreach ($months as $month=>$tests) {
-        $totalValues = [];
-        foreach ($availableTests as $test) {
-            $totalValues[$test]=isset($tests[$test])?$tests[$test]:0;
-            $maxValue = $totalValues[$test]>$maxValue?$totalValues[$test]:$maxValue;
+
+    foreach ($graphData as $year => $months) {
+        foreach ($months as $month => $tests) {
+            $totalValues = [];
+            foreach ($availableTests as $test) {
+                $totalValues[$test] = isset($tests[$test]) ? $tests[$test] : 0;
+                $maxValue = $totalValues[$test] > $maxValue ? $totalValues[$test] : $maxValue;
+            }
+
+            echo '[new Date(' . $year . ', ' . $month . ', 1), ' . implode(', ', $totalValues) . '],';
         }
-        
-        echo '[new Date('.$year.', '.$month.', 1), '.implode(', ', $totalValues).'],';
     }
+} else {
+    echo '[]';
 }
-
 ?>
         ]);
         var options = {
@@ -103,7 +107,6 @@ foreach ($graphData as $year=>$months){
             width: '100%',
             height: 418,
             chartArea: {left: 40, top: 20, width: '85%'},
-
             animation: {
                 duration: 1000,
                 easing: 'inAndOut',
