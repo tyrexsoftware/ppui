@@ -52,14 +52,17 @@ AppAsset::register($this);
             $navigation_items[] = ['label' => 'Home', 'url' => ['/site/index']];
             $navigation_items[] = ['label' => 'About', 'url' => 'http://www.primateprofiler.com/about-us/'];
             $navigation_items[] = ['label' => 'Contact', 'url' => 'http://www.primateprofiler.com/contact-us/'];
-
+            
+            $manager_text = 'Role: User';
+            
             if (!Yii::$app->user->isGuest) {
                 if (Yii::$app->user->identity->is_manager == 1) {
                     $navigation_items[] = ['label' => 'Create User', 'url' => ['/users/create']];
                     $navigation_items[] = ['label' => 'List Users', 'url' => ['/users/list']];
+                    $manager_text = 'Role: Manager';
                 }
                 $navigation_items[] = ['label' => 'My Preferences', 'url' => ['/users/myprofile']];
-                $navigation_items[] = ['label' => 'Logout (' . Yii::$app->user->identity->first_name . ')',
+                $navigation_items[] = ['label' => 'Logout (' . Yii::$app->user->identity->first_name .' '.$manager_text. ')',
                     'url' => ['/site/logout'],
                     'linkOptions' => ['data-method' => 'post']];
             } else {
