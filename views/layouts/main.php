@@ -62,7 +62,7 @@ AppAsset::register($this);
                     $manager_text = 'Role: Manager';
                 }
                 $navigation_items[] = ['label' => 'My Preferences', 'url' => ['/users/myprofile']];
-                $navigation_items[] = ['label' => 'Logout (' . Yii::$app->user->identity->first_name .' '.$manager_text. ')',
+                $navigation_items[] = ['label' => 'Logout (Name: ' . Yii::$app->user->identity->first_name .'. '.$manager_text. ')',
                     'url' => ['/site/logout'],
                     'linkOptions' => ['data-method' => 'post']];
             } else {
