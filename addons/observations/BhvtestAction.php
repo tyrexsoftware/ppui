@@ -32,7 +32,6 @@ class BhvtestAction extends Action {
             //$actionsQ->addOrderBy(['observation_date'=>'SORT_ASC']);
 
 
-
             $dataProvider = new ActiveDataProvider([
             'pagination' => false,
 

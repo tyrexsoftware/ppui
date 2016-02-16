@@ -201,7 +201,13 @@
                                 }
                         ))
                         .add(method.createElement(link).addClass(linkedclass).on('click', function(event) {
-                            method.saveBehavior(method.getBehaviorsBox(event), 1);
+
+                            var linked = 0;
+                            if (false == ($(this).hasClass('ok'))) {
+                                linked = 1;
+                            }
+                            method.saveBehavior(method.getBehaviorsBox(event), linked);
+
                         }))
                         .add(method.createElement(dragButton));
             }
@@ -295,7 +301,7 @@
 
                         method.saveBehavior(method.getBehaviorsBox(event));
                     }));
-           $('.newInput', behaviorsBox).off('focusin').focus();
+            $('.newInput', behaviorsBox).off('focusin').focus();
 
 
         },
@@ -306,7 +312,12 @@
                 id = $(behaviorsBox).attr('id');
             }
             if (typeof linked === "undefined") {
-                linked = 0;
+                var linked = 1;
+                console.log($(behaviorsBox));
+                console.log($('.link', behaviorsBox));
+                if (false == ($('.link', behaviorsBox).hasClass('ok'))) {
+                    linked = 0;
+                }
             }
 
             var container_id = $(behaviorsBox).closest('.' + containerclass).attr('id');
@@ -321,7 +332,7 @@
                     .done(function(msg) {
                         $(behaviorsBox).attr('id', msg.data.element_id);
                         var linkedclass = '';
-                        if(msg.data.recepient==1) {
+                        if (msg.data.recepient == 1) {
                             linkedclass = 'ok';
                         }
                         $('.loadingIcon', behaviorsBox)
@@ -339,7 +350,12 @@
                                                         }
                                                 ))
                                                 .append(method.createElement(link).addClass(linkedclass).on('click', function(event) {
-                                                    method.saveBehavior(method.getBehaviorsBox(event), 1);
+                                                    var linked = 0;
+                                                    if (false == ($(this).hasClass('ok'))) {
+                                                        linked = 1;
+                                                    }
+                                                    method.saveBehavior(method.getBehaviorsBox(event), linked);
+
                                                 }))
                                                 .append(method.createElement(dragButton));
                                     });

@@ -32,9 +32,9 @@ $config = [
             'useFileTransport' => false,
             'transport' => [
                 'class' => 'Swift_SmtpTransport',
-                'host' => 'smtp.gmail.com',
-                'username' => 'snobist@gmail.com',
-                'password' => 'Holbi6122012',
+                'host' => 'in-v3.mailjet.com',
+                'username' => 'Noreply@tyrexsoftware.com',
+                'password' => '3207646de8df82bd8d5932aba10c7b95',
                 'port' => '587',
                 'encryption' => 'tls',
             ],
