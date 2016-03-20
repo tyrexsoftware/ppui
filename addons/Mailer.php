@@ -81,6 +81,8 @@ class Mailer extends Component
      */
     public function sendRecoveryMessage($user, $token)
     {
+        print_r($user->email);
+        die();
         return $this->sendMessage($user->email,
             'Password Recovery',
             'recovery',
